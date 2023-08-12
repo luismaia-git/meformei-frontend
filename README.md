@@ -12,6 +12,6 @@ Equipe:  <a href="https://github.com/Jportela4c">José Portela</a>, <a href="htt
 - Compile
 
 ```bash
-     npm run start:dev
+     npm run start
 ```
 
