@@ -1,4 +1,4 @@
-# Back-end do trabalho final da cadeira de Engenharia de Software do curso Ciência da Computação, UFC - 2023.1.
+# Front-end do trabalho final da cadeira de Engenharia de Software do curso Ciência da Computação, UFC - 2023.1.
 
 <p>
 O Me.Formei é um aplicativo projetado para fornecer assistência abrangente aos estudantes universitários em seu percurso acadêmico. Com ele, os estudantes podem facilmente monitorar seu progresso no curso, incluindo as disciplinas que estão atualmente matriculados, aquelas que já completaram e as que planejam cursar no futuro.
@@ -12,5 +12,6 @@ Equipe:  <a href="https://github.com/Jportela4c">José Portela</a>, <a href="htt
 - Compile
 
 ```bash
-     npm run start:dev
+     npm run start
 ```
+
