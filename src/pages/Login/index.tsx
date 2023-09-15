@@ -17,7 +17,7 @@ import { CustomizedStatusBar } from "../../components/layout/CustomizedStatusBar
 import { User, UserLogin } from "User";
 import { useSignin } from "../../servicesHooks/useSignin";
 import { useUser } from "../../hooks/useUser";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Loading } from "../../components/layout";
 import { TouchableOpacity } from "react-native-gesture-handler";
 

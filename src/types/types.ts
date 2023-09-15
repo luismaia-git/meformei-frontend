@@ -25,15 +25,6 @@ export type TabNavigatorParamList = {
 
 export type TabNavigatorProp = NativeStackNavigationProp<TabNavigatorParamList>;
 
-export type TabAdminNavigatorParamList = {
-  Início: undefined;
-  Disciplinas: undefined;
-  Perfil: undefined;
-  Admins: undefined;
-};
-
-export type TabAdminNavigatorProp = NativeStackNavigationProp<TabAdminNavigatorParamList>;
-
 export type AdditionalHoursParamList = {
   AdditionalHoursHome: undefined;
   AdditionalHoursRegister: undefined;
@@ -59,17 +50,6 @@ export type HourParamList = {
 
 export type HourProp = NativeStackNavigationProp<HourParamList>;
 
-export type DisciplineAdminParamList = {
-  DisciplineAdminHome: undefined;
-  DisciplineDetails: Discipline;
-  AddDisciplineAdmin: undefined
-  ListDisciplineAdmin: undefined;
-  DisciplineHomeAdmin: undefined;
-  DisciplineRegisterAdmin: undefined;
-};
-
-export type DisciplineAdminProp = NativeStackNavigationProp<DisciplineAdminParamList>;
-
 export type DisciplineParamList = {
   DisciplineHome: undefined;
   ListAvailable: undefined;
@@ -87,10 +67,3 @@ export type ProfileParamList = {
 };
 
 export type ProfileProp = NativeStackNavigationProp<ProfileParamList>;
-
-export type AdminParamList = {
-  ListAdmins: undefined;
-  AdminsDetails: Discipline;
-};
-
-export type AdminsProp = NativeStackNavigationProp<AdminParamList>;

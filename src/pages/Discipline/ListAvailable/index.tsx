@@ -3,7 +3,6 @@ import { FlatList, VStack, View } from "native-base";
 import { useState } from "react";
 import { ListRenderItemInfo, Platform } from "react-native";
 import {
-  AdminContactCard,
   DisciplinesByPeriod,
   FilterSelect,
   Header,
@@ -147,7 +146,6 @@ export function ListAvailable() {
                   { label: "Obrigatória", value: "obrigatória" },
                 ]}
               />
-              <AdminContactCard />
             </VStack>
 
             {filtered.length > 0 ? (
