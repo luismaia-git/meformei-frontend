@@ -1,7 +1,7 @@
-import { useMemo, useState } from "react";
-import { auth } from "../service/auth";
 import { User, UserLogin } from "User";
+import { useMemo, useState } from "react";
 import { useUser } from "../hooks/useUser";
+import { auth } from "../service/auth";
 
 export function useSignin() {
   const [data, setData] = useState<User>();
@@ -10,7 +10,7 @@ export function useSignin() {
 
   const { handleUser } = useUser();
 
-  function signin(data: UserLogin, toHome: (user: User) => void) {
+  function signin(data: UserLogin, toHome: (user: User | any) => void) {
     setLoading(true);
     setError(undefined);
     auth

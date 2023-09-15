@@ -1,6 +1,6 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AdditionalHour } from "AdditionalHours";
-import { Discipline, DisciplineData } from "Discipline";
+import { DisciplineData } from "Discipline";
 import { AccountInfo } from "User";
 
 export type UserLoginNavigatorParamList = {
