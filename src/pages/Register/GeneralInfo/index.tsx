@@ -129,7 +129,7 @@ export default function GeneralInfo() {
 
                 <SelectUniversity
                   config={{
-                    placeholder: "Selecione sua univerdade",
+                    placeholder: "Selecione sua universidade",
                     onValueChange: handleChange("university"),
                     selectedValue: values.university,
                   }}

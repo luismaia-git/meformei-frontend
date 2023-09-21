@@ -1,5 +1,5 @@
-import { useMemo, useState, useEffect } from "react";
 import { University } from "University";
+import { useEffect, useMemo, useState } from "react";
 import { university } from "../service/universities";
 
 export function useUniversity(state?: string, city?: string) {

@@ -1,6 +1,6 @@
 import { ISelectProps } from "native-base";
-import { InputSelect } from "../InputSelect";
 import { useUniversity } from "../../../../servicesHooks/useUniversities";
+import { InputSelect } from "../InputSelect";
 
 interface SelectUniversityProps {
   config?: ISelectProps;
@@ -14,6 +14,7 @@ export function SelectUniversity({
   city,
 }: SelectUniversityProps) {
   const { data } = useUniversity(state, city);
+ 
   const dataFormatted = data
     ? data.map((d) => {
         return { label: d.name, value: d.id };

@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.luismaia.meformei"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a3bad725-b5b7-4089-afc2-0b1978cf634f"
+      }
     }
   }
 }
