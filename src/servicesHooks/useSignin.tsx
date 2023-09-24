@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { User, UserLogin } from "User";
 import { useMemo, useState } from "react";
 import { useUser } from "../hooks/useUser";
@@ -18,6 +19,7 @@ export function useSignin() {
       .then((res) => {
         setData(res.data);
         handleUser(res.data);
+        AsyncStorage.setItem("token", res.data?.token);
         toHome(res.data);
       })
       .catch((error) =>
