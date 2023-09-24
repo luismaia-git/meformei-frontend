@@ -1,34 +1,46 @@
-import { Container, ContentForm } from "../styles";
-import { Header } from "../../../components/layout";
+import { useNavigation } from "@react-navigation/native";
+import { Formik } from "formik";
 import { Button, VStack } from "native-base";
+import { KeyboardAvoidingView, Platform } from "react-native";
+import { useTheme } from "styled-components";
+import * as yup from "yup";
+import { Header } from "../../../components/layout";
+import { CustomizedStatusBar } from "../../../components/layout/CustomizedStatusBar";
 import {
   ConfirmPassword,
   InputNumber,
   InputText,
 } from "../../../components/layout/UI";
 import { H5, Subtitle } from "../../../components/shared/text";
-import { useNavigation } from "@react-navigation/native";
 import { UserLoginNavigationProp } from "../../../types/types";
-import { useTheme } from "styled-components";
-import { CustomizedStatusBar } from "../../../components/layout/CustomizedStatusBar";
-import { KeyboardAvoidingView } from "react-native";
-import { Platform } from "react-native";
-import * as yup from "yup";
-import { Formik } from "formik";
+import { Container, ContentForm } from "../styles";
+import { auth } from './../../../service/auth';
 
 export default function AccountInfo() {
   const theme = useTheme();
   const navigation = useNavigation<UserLoginNavigationProp>();
-
+  
   let registerValidationSchema = yup.object().shape({
-    registration: yup.number().required("A matrícula é obrigatória."),
+    registration: yup.number().required("A matrícula é obrigatória.").test('checkRegistrationAvailability', 'Esta matricula de usuário já está em uso.', async function (value) {
+      const response = await auth.checkRegistrationAvailability(value);
+      return response;
+    }),
     name: yup.string().required("O nome é obrigatório."),
     lastname: yup.string().required("O sobrenome é obrigatório."),
-    username: yup.string().required("O usuário é obrigatório."),
+    username: yup.string().required("O usuário é obrigatório.").test('checkUsernameAvailability', 'Este nome de usuário já está em uso.', async function (value) {
+    
+      const response = await auth.checkUsernameAvailability(value);
+      return response;
+    }),
     email: yup
       .string()
       .email("Por favor, digite um e-mail válido.")
-      .required("O e-mail é obrigatório."),
+      .required("O e-mail é obrigatório.").test('checkEmailAvailability', 'Este email de usuário já está em uso.', async function (value) {
+    
+        const response = await auth.checkEmailAvailability(value);
+        
+        return response;
+      }),
     password: yup
       .string()
       .required("A senha é obrigatória.")
