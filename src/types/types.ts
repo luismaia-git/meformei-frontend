@@ -10,7 +10,6 @@ export type UserLoginNavigatorParamList = {
   SucessRegister: undefined;
   FailedRegister: undefined;
   Tab: undefined;
-  Admin: undefined;
 };
 
 export type UserLoginNavigationProp =
@@ -64,6 +63,7 @@ export type ProfileParamList = {
   ProfileHome: undefined;
   ProfileRegister: undefined;
   ProfileEdit: undefined;
+  ProfileDetails: undefined;
 };
 
 export type ProfileProp = NativeStackNavigationProp<ProfileParamList>;

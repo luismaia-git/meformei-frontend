@@ -9,9 +9,12 @@ declare module "Discipline" {
     curriculumId: string;
     description: string;
     isOptional: boolean;
-    bibliography: string[];
     prerequisites: string[];
     workload: number;
+    start: number,
+    end: number,
+    daysWeek: string[]
+    bibliography: string[];
   }
 
   interface DisciplineByPeriod {

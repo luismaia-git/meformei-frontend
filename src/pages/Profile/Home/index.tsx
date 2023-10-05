@@ -16,8 +16,9 @@ export function ProfileHome() {
 
   const options = [
     {
-      name: "Editar perfil",
-      linkTo: "AdditionalHours",
+      name: "Perfil",
+      linkTo: "ProfileDetails",
+      root: "Profile"
     },
     {
       name: "Sair",

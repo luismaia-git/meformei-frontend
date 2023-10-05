@@ -45,7 +45,7 @@ export default function Login() {
   }, []);
 
   const toHome = (user: User) => {
-    const to = user.isAdmin ? "Admin" : "Tab";
+    const to = "Tab";
     navigation.navigate(to);
     navigation.reset({
       index: 0,
