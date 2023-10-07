@@ -1,6 +1,7 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AdditionalHour } from "AdditionalHours";
 import { DisciplineData } from "Discipline";
+import { Profile } from "Profile";
 import { AccountInfo } from "User";
 
 export type UserLoginNavigatorParamList = {
@@ -27,8 +28,8 @@ export type TabNavigatorProp = NativeStackNavigationProp<TabNavigatorParamList>;
 export type AdditionalHoursParamList = {
   AdditionalHoursHome: undefined;
   AdditionalHoursRegister: undefined;
-  AdditionalHoursEdit: AdditionalHour;
   AdditionalHoursDetails: AdditionalHour;
+  AdditionalHoursEdit: AdditionalHour;
 };
 
 export type AdditionalHoursProp =
@@ -63,7 +64,7 @@ export type ProfileParamList = {
   ProfileHome: undefined;
   ProfileRegister: undefined;
   ProfileEdit: undefined;
-  ProfileDetails: undefined;
+  ProfileDetails: Profile;
 };
 
 export type ProfileProp = NativeStackNavigationProp<ProfileParamList>;

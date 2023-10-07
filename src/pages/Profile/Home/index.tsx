@@ -9,10 +9,38 @@ import { ButtonHomeCard } from "../../../components/layout/ButtonHomeCard";
 import { Subtitle } from "../../../components/shared/text";
 import { H5 } from "../../../components/shared/text";
 import { useUser } from "../../../hooks/useUser";
+import { Profile } from "Profile";
 
 export function ProfileHome() {
   const { theme, toggleColorMode } = useTheme();
   const { deleteUser, loading } = useUser();
+
+  const data: Profile[] = [
+    {
+      name: "Vitim",
+      lastname: "comovente",
+      username: "vitim-comovente",
+      email: "v@gmail.com",
+      city: "Fortaleza",
+      state: "Ceará",
+    },
+    {
+      name: "Sabrina",
+      lastname: "c",
+      username: "vitim-comovente",
+      email: "v@gmail.com",
+      city: "Fortaleza",
+      state: "Ceará",
+    },
+    {
+      name: "Itim",
+      lastname: "c",
+      username: "vitim-comovente",
+      email: "v@gmail.com",
+      city: "Fortaleza",
+      state: "Ceará",
+    },
+  ];
 
   const options = [
     {
