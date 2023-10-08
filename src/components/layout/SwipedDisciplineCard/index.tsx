@@ -30,6 +30,7 @@ export function SwipedDisciplineCard({
   const { colors } = useThemeNative();
   const { theme } = useTheme();
 
+
   return (
     <Swipeable
       key={item_key}
@@ -41,7 +42,7 @@ export function SwipedDisciplineCard({
       renderLeftActions={EditButton}
       renderRightActions={DeleteButton}
       onSwipeableRightOpen={() => handleRight(item_key)}
-      onSwipeableLeftOpen={() => handleLeft(item_key)}
+      // onSwipeableLeftOpen={() => handleLeft(item_key)}
       onSwipeableWillOpen={() => onSwipeableWillOpen(item_key)}
     >
       <TouchableHighlight

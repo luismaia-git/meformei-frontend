@@ -3,10 +3,12 @@ import { H5 } from "../../shared/text";
 import { Container, IconStyle } from "./styles";
 import { Feather } from "@expo/vector-icons";
 import { Animated } from "react-native";
+import Swipeable from "react-native-gesture-handler/lib/typescript/components/Swipeable";
+import { TouchableHighlight } from "react-native-gesture-handler";
 
 export function EditButton(
   progress: Animated.AnimatedInterpolation<string | number>,
-  dragX: Animated.AnimatedInterpolation<string | number>
+  dragX: Animated.AnimatedInterpolation<string | number>,
 ) {
   const scale = dragX.interpolate({
     inputRange: [0, 50],
@@ -15,13 +17,13 @@ export function EditButton(
   });
 
   return (
-    <Container>
-      <IconStyle style={{ transform: [{ scale }] }}>
-        <Icon as={Feather} name="edit" size="4" color="#ffffff" />
-        <H5 color="#ffffff" size={10}>
-          EDITAR
-        </H5>
-      </IconStyle>
-    </Container>
+      <Container>
+        <IconStyle style={{ transform: [{ scale }] }}>
+          <Icon as={Feather} name="edit" size="4" color="#ffffff" />
+          <H5 color="#ffffff" size={10}>
+            EDITAR
+          </H5>
+        </IconStyle>
+      </Container>
   );
 }
