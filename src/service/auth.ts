@@ -4,8 +4,7 @@ import api from "./config/api";
 import { callService } from "./config/service";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const getToken = async () => {
+export const getToken = async () => {
   const token = await AsyncStorage.getItem("token");
   return token;
 };
@@ -24,7 +23,8 @@ const service = () => {
   async function signin(value: UserLogin) {
     const path = `${resource}/signin`;
     const response = await callService(() => api.post<User>(path, value));
-
+    await AsyncStorage.setItem("token", response.data?.token);
+    api.defaults.headers["Authorization"] = `Bearer ${response.data?.token}`;
     return response;
   }
 

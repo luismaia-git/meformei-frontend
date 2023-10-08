@@ -15,7 +15,7 @@ export function useDisciplines() {
   useEffect(() => {
     setLoading(true);
     university
-      .getDisciplines(user?.user.university.id, user?.user.curriculumId)
+      .getDisciplines(user?.user.curriculumId)
       .then((res) => setData(res))
       .catch((err) => setError(err))
       .finally(() => setLoading(false));
