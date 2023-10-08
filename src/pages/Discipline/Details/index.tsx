@@ -103,7 +103,7 @@ export function DisciplineDetails() {
                   <HStack key={i} alignItems="center" space={2}>
                     <Icon as={Entypo} name="chevron-right" />
                     <H5 size={16} weight="regular">
-                      {pr}
+                      {pr.name}
                     </H5>
                   </HStack>
                 );
