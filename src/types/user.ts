@@ -6,10 +6,7 @@ declare module "User" {
       email: string;
       registration: string;
       curriculumId: string;
-      course: {
-        id: string;
-        name: string;
-      };
+      courseName: string;
       currentSemester: number;
       enrollmentSemester: number;
       enrollmentYear: number;

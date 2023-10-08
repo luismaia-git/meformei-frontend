@@ -1,9 +1,9 @@
-import { View } from "react-native";
-import { Container, Row } from "./styles";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { H5, Subtitle } from "../../shared/text";
+import { View } from "react-native";
 import { useTheme } from "styled-components";
 import { useUser } from "../../../hooks/useUser";
+import { H5, Subtitle } from "../../shared/text";
+import { Container, Row } from "./styles";
 
 export function UserInfo() {
   const theme = useTheme();
@@ -25,7 +25,7 @@ export function UserInfo() {
             <H5 color={theme.colors.white}>
               Curso:{" "}
               <H5 color={theme.colors.white} weight="regular">
-                {user?.user.course.name}
+                {user?.user.courseName}
               </H5>
             </H5>
             <H5 color={theme.colors.white}>
