@@ -9,11 +9,11 @@ declare module "Discipline" {
     curriculumId: string;
     description: string;
     isOptional: boolean;
-    prerequisites: DisciplineData[];
+    prerequisites: string[];
     workload: number;
-    start: number,
-    end: number,
-    daysWeek: string[]
+    start?: number,
+    end?: number,
+    daysWeek?: string[]
     bibliography: string[];
   }
 

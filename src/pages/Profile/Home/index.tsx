@@ -1,13 +1,12 @@
-import { Container, Content, TopContent } from "../styles";
-import { useTheme } from "../../../hooks/useTheme";
-import { CustomizedStatusBar } from "../../../components/layout/CustomizedStatusBar";
-import { Header } from "../../../components/layout";
-import { Switch, VStack, View } from "native-base";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Switch, VStack, View } from "native-base";
+import { Header } from "../../../components/layout";
+import { CustomizedStatusBar } from "../../../components/layout/CustomizedStatusBar";
+import { useTheme } from "../../../hooks/useTheme";
+import { Container, Content, TopContent } from "../styles";
 
 import { ButtonHomeCard } from "../../../components/layout/ButtonHomeCard";
-import { Subtitle } from "../../../components/shared/text";
-import { H5 } from "../../../components/shared/text";
+import { H5, Subtitle } from "../../../components/shared/text";
 import { useUser } from "../../../hooks/useUser";
 import { Profile } from "Profile";
 
@@ -121,7 +120,7 @@ export function ProfileHome() {
                   size={18}
                   weight="regular"
                 >
-                  {user?.user.course.name}
+                  {user?.user.courseName}
                 </H5>
                 <H5
                   align="center"

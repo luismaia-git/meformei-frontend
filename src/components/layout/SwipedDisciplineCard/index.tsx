@@ -6,6 +6,8 @@ import { useTheme } from "../../../hooks/useTheme";
 import { Swipeable, TouchableHighlight } from "react-native-gesture-handler";
 import { EditButton } from "../EditButton";
 import { DeleteButton } from "../DeleteButton";
+import { useUser } from "../../../hooks/useUser";
+import { useDisciplinesById } from "../../../servicesHooks/useDisciplinesById";
 
 interface SwipedDisciplineCardProps {
   data: DisciplineData;
@@ -13,8 +15,8 @@ interface SwipedDisciplineCardProps {
   item_key: number;
   rowRefs: Map<number, Swipeable>;
   onSwipeableWillOpen: (index: number) => void;
-  handleRight: (index: number) => void;
-  handleLeft: (index: number) => void;
+  onPressLeft: () => void;
+  onPressRight: () => void;
   onPress: () => void;
 }
 
@@ -23,12 +25,16 @@ export function SwipedDisciplineCard({
   item_key,
   rowRefs,
   onSwipeableWillOpen,
-  handleRight,
-  handleLeft,
+  onPressLeft,
+  onPressRight,
   onPress,
 }: SwipedDisciplineCardProps) {
   const { colors } = useThemeNative();
   const { theme } = useTheme();
+
+  const { user } = useUser();
+
+  const { data: prerequisitesData } = useDisciplinesById(data.prerequisites);
 
   return (
     <Swipeable
@@ -40,8 +46,6 @@ export function SwipedDisciplineCard({
       }}
       renderLeftActions={EditButton}
       renderRightActions={DeleteButton}
-      onSwipeableRightOpen={() => handleRight(item_key)}
-      onSwipeableLeftOpen={() => handleLeft(item_key)}
       onSwipeableWillOpen={() => onSwipeableWillOpen(item_key)}
     >
       <TouchableHighlight
@@ -58,8 +62,8 @@ export function SwipedDisciplineCard({
             <H5 color={theme.colors.text}>Carga horária: {data.workload}h</H5>
             <H5 color={theme.colors.text}>
               Pré-requisitos:{" "}
-              {data.prerequisites.length > 0
-                ? data.prerequisites.map((pr, i) => (
+                { prerequisitesData && prerequisitesData.disciplines.length > 0
+                ? prerequisitesData.disciplines.map((pr, i) => (
                     <H5
                       key={`${pr.cod}_${i}`}
                       color={theme.colors.primary[500]}
