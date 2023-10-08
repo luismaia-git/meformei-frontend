@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { DisciplineByPeriod } from "Discipline";
-import { FlatList, HStack, VStack, View } from "native-base";
+import { Divider, FlatList, HStack, VStack, View } from "native-base";
 import { useEffect, useState } from "react";
 import { ListRenderItemInfo, Platform } from "react-native";
 import {
@@ -17,37 +17,37 @@ import { useTheme } from "../../../hooks/useTheme";
 import { useUser } from "../../../hooks/useUser";
 import { useDisciplines } from "../../../servicesHooks/useDisciplines";
 import { DisciplineProp } from "../../../types/types";
-import { Container, Content } from "../styles";
+import { Container, Content, ScrollContainer } from "../styles";
 
 // type StatusTypeWithTodo =  "TODO" | StatusType  
 export function FormationPlan() {
   const { theme } = useTheme();
   const navigation = useNavigation<DisciplineProp>();
-  const {user} = useUser()
-  const [ status, setStatus ] = useState<string>("INPROGRESS")
+  const { user } = useUser()
+  const [status, setStatus] = useState<string>("INPROGRESS")
   const [termo, setTermo] = useState("");
 
   const { disciplines, loading, getDisciplinesPeriodByStatus, getDisciplinesPeriodTodo } = useDisciplines();
-  async function fetchDisciplinesByStatus(){
-    await getDisciplinesPeriodByStatus({status: status, studentRegistration: user?.user?.registration?? ""})
+  async function fetchDisciplinesByStatus() {
+    await getDisciplinesPeriodByStatus({ status: status, studentRegistration: user?.user?.registration ?? "" })
   }
 
-  async function fetchDisciplinesTodo(){
-    await getDisciplinesPeriodTodo({studentRegistration: user?.user?.registration?? "", curriculumId : user?.user?.curriculumId?? ""})
+  async function fetchDisciplinesTodo() {
+    await getDisciplinesPeriodTodo({ studentRegistration: user?.user?.registration ?? "", curriculumId: user?.user?.curriculumId ?? "" })
   }
-  useEffect( () => {
-    if(status == "TODO"){
+  useEffect(() => {
+    if (status == "TODO") {
       fetchDisciplinesTodo()
-      
+
     }
-    if(status != "TODO") {
+    if (status != "TODO") {
       fetchDisciplinesByStatus()
-    } 
-    
-  },[status])
+    }
+
+  }, [status])
 
 
-   
+
   const HeaderElement = () => {
     return (
       <VStack space={3} paddingBottom={4}>
@@ -58,14 +58,14 @@ export function FormationPlan() {
           colorText={theme.colors.white}
         />
         <SearchInput
-                flex={0}
-                config={{ defaultValue: termo, onChangeText: setTermo }}
-                onClear={setTermo}
-                title="disciplina"
-              />
+          flex={0}
+          config={{ defaultValue: termo, onChangeText: setTermo }}
+          onClear={setTermo}
+          title="disciplina"
+        />
         <HStack space={2}>
           <FilterSelect
-            
+
             config={{
               selectedValue: status,
               onValueChange: (value: string) => {
@@ -81,11 +81,11 @@ export function FormationPlan() {
               { label: "Trancadas", value: "WITHDRAWAL" },
               { label: "Reprovadas", value: "FAILED" },
             ]}
-          /> 
+          />
 
           <CreateButton
-            onPress={() =>  navigation.navigate("DisciplineRegister")} // ver 
-          /> 
+            onPress={() => navigation.navigate("DisciplineRegister")} // ver 
+          />
         </HStack>
       </VStack>
     );
@@ -94,14 +94,14 @@ export function FormationPlan() {
   function renderCard(itens: ListRenderItemInfo<DisciplineByPeriod>) {
     const { item } = itens;
     // adicionar condição se o status for tipo a Fazer, Trancada e Reprovadas, renderiza o Componente <DisciplinesByPeriod/>
-    
+
     //else
     return (
-       <SwipedDisciplinesByPeriod
-         data={item}
-         key={`${item.period}_${itens.index}`}
-         {...item}
-       />
+      <SwipedDisciplinesByPeriod
+        data={item}
+        key={`${item.period}_${itens.index}`}
+        {...item}
+      />
     );
   }
 
@@ -121,12 +121,28 @@ export function FormationPlan() {
             "PÁDUA FILHO, W. Engenharia de Software: Fundamentos, Métodos e Padrões. 3. ed. Rio de Janeiro: LTC, 2009. 1248 p. ISBN 9788521616504.",
           ],
           prerequisites: [
-            "CB0534",
-            "CB0534"
+            {
+              id: "exampleid",
+              name: "CB0534",
+              cod: "CB0534",
+              menu: "1. Gerenciamento de projeto, 2. Estimação de custos, 3. Análise e especificação de requisitos, 4. Especificações formais, 5. Interface com o usuário, 6. Modelagem de dados, 7. Técnicas e modelagens para projeto e implementação: arquitetura de projeto, projeto estruturado, projeto orientado a objetos, 8. Gerenciamento de versões e configurações, 9. Verificação: testes, revisões e inspeções, 10. Validação e certificação de qualidade, 11. Manutenção, 12. Documentação.",
+              curriculumId: "exampleid",
+              description: "bla bla bla",
+              isOptional: false,
+              workload: 96,
+              start: 0,
+              end: 0,
+              daysWeek: [],
+              bibliography: [],
+              prerequisites: []
+            }
           ],
           curriculumId: "exampleid",
           description: "bla bla bla",
-          id: "exampleid"
+          id: "exampleid",
+          start: 0,
+          end: 0,
+          daysWeek: [],
         },
         {
           name: "Lógica para ciência da Computação",
@@ -138,7 +154,10 @@ export function FormationPlan() {
           bibliography: [],
           curriculumId: "exampleid",
           description: "bla bla bla",
-          id: "exampleid"
+          id: "exampleid",
+          start: 0,
+          end: 0,
+          daysWeek: [],
         },
         {
           name: "Computação Gráfica II",
@@ -146,11 +165,14 @@ export function FormationPlan() {
           workload: 64,
           cod: "CB0534",
           isOptional: true,
+          menu: "teste",
           bibliography: [],
           curriculumId: "exampleid",
           description: "bla bla bla",
           id: "exampleid",
-          menu: "teste"
+          start: 0,
+          end: 0,
+          daysWeek: [],
         },
         {
           name: "Aprendizagem de Máquina",
@@ -158,64 +180,65 @@ export function FormationPlan() {
           workload: 64,
           cod: "CB0534",
           isOptional: true,
+          menu: "teste",
           bibliography: [],
           curriculumId: "exampleid",
           description: "bla bla bla",
           id: "exampleid",
-          menu: "teste"
+          start: 0,
+          end: 0,
+          daysWeek: [],
         },
       ],
     },
   ];
 
   const filteredList =
-  termo.length > 0
-    ? disciplines?.map((d) => {
-          return {
-            ...d,
-            disciplines: d.disciplines.filter(
-              (dc) =>
-                dc.name.toLowerCase().includes(termo.toLowerCase()) ||
-                dc.cod.toLowerCase().includes(termo.toLowerCase())
-            ),
-          };
-        })
+    termo.length > 0
+      ? disciplines?.map((d) => {
+        return {
+          ...d,
+          disciplines: d.disciplines.filter(
+            (dc) =>
+              dc.name.toLowerCase().includes(termo.toLowerCase()) ||
+              dc.cod.toLowerCase().includes(termo.toLowerCase())
+          ),
+        };
+      })
         .filter((d) => d.disciplines.length > 0)
-    : disciplines
-      
-      
+      : disciplines
+
+
   return (
-    <Container>
+    <ScrollContainer>
       {loading ? (
         <Loading opacity={false} />
       ) : (
         <>
-      <CustomizedStatusBar backgroundColor={theme.colors.background} />
-      <Content>
-      <HeaderElement/>
-      {/* Integração: so mudar o data para filteredList */}
-      {data?.length > 0 ? (
-              <FlatList
-              contentContainerStyle={{
-                paddingBottom: Platform.OS === "ios" ? 70 : 0,
-              }}
-              data={data}
-              renderItem={renderCard}
-              // ListHeaderComponent={HeaderElement}
-              keyExtractor={(item, i) => `${item.period}_${i}`}
-              showsVerticalScrollIndicator={false}
-              ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-            />
-            ) : (
-              <View justifyContent="center" alignItems="center" marginTop={20}>
-                <H5>Nenhum resultado foi encontrado</H5>
-              </View>
-            )}
-        
-      </Content>
-
-      </>)
+          <CustomizedStatusBar backgroundColor={theme.colors.background} />
+          <Content>
+            <HeaderElement />
+            {/* Integração: so mudar o data para filteredList */}
+              {data?.length > 0 ?
+                (<VStack space={2}>
+                  {data?.map((item, i) => {
+                    return (
+                      <SwipedDisciplinesByPeriod
+                        data={item}
+                        key={`${item.period}_${i}`}
+                        {...item}
+                      />
+                    );
+                  })}
+                </VStack>
+                ) : (
+                  <View justifyContent="center" alignItems="center" marginTop={20}>
+                    <H5>Nenhum resultado foi encontrado</H5>
+                  </View>
+                )}
+          </Content>
+        </>)
       }
-    </Container>
+    </ScrollContainer>
   );
 }
