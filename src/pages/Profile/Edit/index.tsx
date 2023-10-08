@@ -83,10 +83,9 @@ export function ProfileEdit() {
               config={{ placeholder: "Cidade" }}
             />
 
-
             <HStack space={3}>
               <Button flex={1} marginTop={30} mt="5">
-                <H5 color={theme.colors.white}>Adicionar</H5>
+                <H5 color={theme.colors.white}>Confirmar</H5>
               </Button>
               <Button flex={1} variant="outline" marginTop={30} mt="5">
                 <H5 color={theme.colors.text}>Cancelar</H5>
