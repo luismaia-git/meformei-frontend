@@ -11,6 +11,7 @@ interface InputTextProps {
   touched?: boolean;
   isValid?: boolean;
   errors?: string;
+  defaultValue?: string;
 }
 
 export function InputText({
@@ -18,6 +19,7 @@ export function InputText({
   config,
   touched,
   errors,
+  defaultValue
 }: InputTextProps) {
   const theme = useTheme();
   return (
@@ -31,6 +33,7 @@ export function InputText({
         fontFamily="Nunito-Regular"
         fontSize={14}
         color={theme.colors.text}
+        defaultValue= {defaultValue}
         variant="underlined"
         {...config}
       />

@@ -2,13 +2,15 @@ import { VStack, View, Button, HStack } from "native-base";
 import { BorderedContent, Container } from "../styles";
 import { Header, SelectMultiple } from "../../../components/layout";
 import { useTheme } from "styled-components";
-import { InputSelect } from "../../../components/layout/UI";
+import { InputSelect, InputText } from "../../../components/layout/UI";
 import { KeyboardAvoidingView, Platform } from "react-native";
 import { H5 } from "../../../components/shared/text";
 import { CustomizedStatusBar } from "../../../components/layout/CustomizedStatusBar";
+import { useUser } from "../../../hooks/useUser";
 
 export function ProfileEdit() {
   const theme = useTheme();
+  const { user } = useUser();
   return (
     <Container>
       <CustomizedStatusBar />
@@ -28,86 +30,59 @@ export function ProfileEdit() {
 
         <BorderedContent>
           <VStack space={6} mt="5" paddingBottom={30}>
-            <SelectMultiple
-              data={[
-                {
-                  id: 0,
-                  name: "Aprendizado e Manutenção de Máquinas de Vencer",
-                  cod: "CK0215",
-                },
-                {
-                  id: 1,
-                  name: "Processamento de Imagens",
-                  cod: "CK0215",
-                },
-                {
-                  id: 2,
-                  name: "Teoria da Computação",
-                  cod: "CK0215",
-                },
-                {
-                  id: 3,
-                  name: "Construção e Análise de Algoritmos",
-                  cod: "CK0215",
-                },
-                {
-                  id: 4,
-                  name: "Circuitos Digitais",
-                  cod: "CK0215",
-                },
-                {
-                  id: 5,
-                  name: "Programação",
-                  cod: "CK0215",
-                },
-                {
-                  id: 6,
-                  name: "Engenharia de Software",
-                  cod: "CK0215",
-                },
-                {
-                  id: 7,
-                  name: "Computação Gráfica",
-                  cod: "CK0215",
-                },
-                {
-                  id: 8,
-                  name: "Lógica para Ciência da computação",
-                  cod: "CK0215",
-                },
-                {
-                  id: 9,
-                  name: "Seminário em Computação",
-                  cod: "CK0215",
-                },
-                {
-                  id: 10,
-                  name: "Informática e Sociedade",
-                  cod: "CK0215",
-                },
-              ]}
-              onChange={() => console.log()}
-              placeholder="Selecione a disciplina"
+
+            <InputText
+              label="Nome"
+              defaultValue={user!.user.name}
+              config={{ placeholder: "Nome" }}
+            />
+
+            <InputText
+              label="Sobrenome"
+              defaultValue={user!.user.lastname}
+              config={{ placeholder: "Sobrenome" }}
             />
 
             <InputSelect
-              config={{ placeholder: "Selecione o status da disciplina" }}
+              config={{ placeholder: "Estado" }}
               values={[
-                { label: "Em andamento", value: "Em andamento" },
-                { label: "Concluída", value: "Concluída" },
-                { label: "A Fazer", value: "A Fazer" },
+                { label: "AC", value: "AC" },
+                { label: "AL", value: "AL" },
+                { label: "AP", value: "AP" },
+                { label: "AM", value: "AM" },
+                { label: "BA", value: "BA" },
+                { label: "CE", value: "CE" },
+                { label: "DF", value: "DF" },
+                { label: "ES", value: "ES" },
+                { label: "GO", value: "GO" },
+                { label: "MA", value: "MA" },
+                { label: "MT", value: "MT" },
+                { label: "MS", value: "MS" },
+                { label: "MG", value: "MG" },
+                { label: "PA", value: "PA" },
+                { label: "PB", value: "PB" },
+                { label: "PR", value: "PR" },
+                { label: "PE", value: "PE" },
+                { label: "PI", value: "PI" },
+                { label: "RR", value: "RR" },
+                { label: "RO", value: "RO" },
+                { label: "RJ", value: "RJ" },
+                { label: "RN", value: "RN" },
+                { label: "RS", value: "RS" },
+                { label: "SC", value: "SC" },
+                { label: "SP", value: "SP" },
+                { label: "SE", value: "SE" },
+                { label: "TO", value: "TO" }
               ]}
-              label="Status"
+              label="Estado"
             />
-            <InputSelect
-              config={{ placeholder: "Selecione o período da disciplina" }}
-              values={[
-                { label: "Período atual", value: "Período atual" },
-                { label: "Período 1", value: "Período 1" },
-                { label: "Período 2", value: "Período 2" },
-              ]}
-              label="Período"
+
+            <InputText
+              label="Cidade"
+              defaultValue={user!.user.city}
+              config={{ placeholder: "Cidade" }}
             />
+
 
             <HStack space={3}>
               <Button flex={1} marginTop={30} mt="5">

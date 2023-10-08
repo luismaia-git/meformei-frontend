@@ -1,4 +1,4 @@
-import { Divider, HStack, VStack, useTheme as useThemeNative } from 'native-base';
+import { Divider, HStack, Icon, VStack, useTheme as useThemeNative } from 'native-base';
 import { CustomizedStatusBar } from '../../../components/layout/CustomizedStatusBar';
 import { Header } from '../../../components/layout/Header';
 import { H5, Subtitle } from '../../../components/shared/text';
@@ -8,9 +8,14 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { ProfileParamList } from '../../../types/types';
 import { useTheme } from "../../../hooks/useTheme";
 import { useUser } from "../../../hooks/useUser";
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
 export function ProfileDetails() {
   const { colors } = useThemeNative();
+  const navigation = useNavigation<any>();
+  const { theme } = useTheme();
 
   const { user } = useUser();
 
@@ -28,6 +33,20 @@ export function ProfileDetails() {
       <CustomizedStatusBar />
       <Header
         backButton
+        colorIcon={theme.colors.text}
+        colorText={theme.colors.text}
+        rightButton={() => (
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ProfileEdit")}
+          >
+            <Icon
+              as={Ionicons}
+              name="md-pencil"
+              color={theme.colors.text}
+              size={30}
+            />
+          </TouchableOpacity>
+        )}
       />
       <BorderedContent>
         <VStack space={6}>
@@ -38,6 +57,8 @@ export function ProfileDetails() {
             <Subtitle  size={26}>
               {user!.user.lastname}
             </Subtitle>
+
+            
           </VStack>
 
           {column.map((v, i) => {
