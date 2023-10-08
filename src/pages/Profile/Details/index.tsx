@@ -7,21 +7,20 @@ import { ScrollContent } from './styles';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { ProfileParamList } from '../../../types/types';
 import { useTheme } from "../../../hooks/useTheme";
+import { useUser } from "../../../hooks/useUser";
 
 export function ProfileDetails() {
   const { colors } = useThemeNative();
-  // const { theme } = useTheme();
 
-  const { params } =
-    useRoute<RouteProp<ProfileParamList, "ProfileDetails">>();
+  const { user } = useUser();
 
   const column = [
-    { name: "Nome", value: params.name },
-    { name: "Sobrenome", value: params.lastname },
-    { name: "UserName", value: params.username},
-    { name: "Email", value: params.email },
-    { name: "Cidade", value: params.city },
-    { name: "Estado", value: params.state },
+    { name: "Nome", value: user!.user.name },
+    { name: "Sobrenome", value: user!.user.lastname },
+    { name: "UserName", value: user!.user.username},
+    { name: "Email", value: user!.user.email },
+    { name: "Cidade", value: user!.user.city },
+    { name: "Estado", value: user!.user.state },
   ];
 
   return (
@@ -34,10 +33,10 @@ export function ProfileDetails() {
         <VStack space={6}>
           <VStack>
             <H5 color={colors.trueGray[400]}>
-              #{params.name}
+              #{user!.user.name}
             </H5>
             <Subtitle  size={26}>
-              {params.lastname}
+              {user!.user.lastname}
             </Subtitle>
           </VStack>
 
