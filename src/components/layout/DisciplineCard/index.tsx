@@ -32,7 +32,7 @@ export function DisciplineCard({ data, onPress }: DisciplineCardProps) {
             {data.prerequisites.length > 0
               ? data.prerequisites.map((pr, i) => (
                   <H5 key={`${pr}_${i}`} color={theme.colors.primary[500]}>
-                    {pr}
+                    {pr.name}
                     {i !== data.prerequisites.length - 1 && ", "}
                   </H5>
                 ))

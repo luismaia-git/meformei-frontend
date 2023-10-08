@@ -1,14 +1,14 @@
 import { Container } from "./styles";
 import { VStack, useTheme as useThemeNative } from "native-base";
 import { H5, Subtitle } from "../../shared/text";
-import { Discipline } from "Discipline";
+import { DisciplineData } from "Discipline";
 import { useTheme } from "../../../hooks/useTheme";
 import { Swipeable, TouchableHighlight } from "react-native-gesture-handler";
 import { EditButton } from "../EditButton";
 import { DeleteButton } from "../DeleteButton";
 
 interface SwipedDisciplineCardProps {
-  data: Discipline;
+  data: DisciplineData;
 
   item_key: number;
   rowRefs: Map<number, Swipeable>;

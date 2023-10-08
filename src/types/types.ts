@@ -56,6 +56,7 @@ export type DisciplineParamList = {
   FormationPlan: undefined;
   DisciplineDetails: DisciplineData;
   DisciplineRegister: undefined;
+  DisciplineEdit: DisciplineData;
 };
 
 export type DisciplineProp = NativeStackNavigationProp<DisciplineParamList>;
