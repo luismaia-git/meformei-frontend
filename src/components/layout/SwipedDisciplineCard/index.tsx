@@ -8,7 +8,6 @@ import { EditButton } from "../EditButton";
 import { DeleteButton } from "../DeleteButton";
 import { useUser } from "../../../hooks/useUser";
 import { useDisciplinesById } from "../../../servicesHooks/useDisciplinesById";
-import { Button, Touchable } from "react-native";
 
 interface SwipedDisciplineCardProps {
   data: DisciplineData;

@@ -4,6 +4,7 @@ import { TouchableHighlight } from "react-native";
 import { useTheme } from "../../../hooks/useTheme";
 import { H5, Subtitle } from "../../shared/text";
 import { Container } from "./styles";
+import { useDisciplinesById } from "../../../servicesHooks/useDisciplinesById";
 
 interface DisciplineCardProps {
   data: DisciplineData;
@@ -13,6 +14,8 @@ interface DisciplineCardProps {
 export function DisciplineCard({ data, onPress }: DisciplineCardProps) {
   const { colors } = useThemeNative();
   const { theme } = useTheme();
+
+  const { data: prerequisitesData } = useDisciplinesById(data.prerequisites);
 
   return (
     <TouchableHighlight
@@ -29,13 +32,16 @@ export function DisciplineCard({ data, onPress }: DisciplineCardProps) {
           <H5 color={theme.colors.text}>Carga horária: {data.workload}h</H5>
           <H5 color={theme.colors.text}>
             Pré-requisitos:{" "}
-            {data.prerequisites.length > 0
-              ? data.prerequisites.map((pr, i) => (
-                  <H5 key={`${pr}_${i}`} color={theme.colors.primary[500]}>
-                    {pr.name}
-                    {i !== data.prerequisites.length - 1 && ", "}
-                  </H5>
-                ))
+            {prerequisitesData && prerequisitesData.disciplines.length > 0
+              ? prerequisitesData.disciplines.map((pr, i) => (
+                <H5
+                  key={`${pr.cod}_${i}`}
+                  color={theme.colors.primary[500]}
+                >
+                  {pr.name}
+                  {i !== data.prerequisites.length - 1 && ", "}
+                </H5>
+              ))
               : "-"}
           </H5>
         </VStack>
