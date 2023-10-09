@@ -21,6 +21,11 @@ declare module "Discipline" {
     period: number;
     disciplines: DisciplineData[];
   }
+  
+  interface DisciplineWithPeriod {
+    period: number;
+    discipline: DisciplineData;
+  }
 
   // interface DisciplineByPeriod {
   //   disciplines: Discipline[];
