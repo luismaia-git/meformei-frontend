@@ -121,21 +121,8 @@ export function FormationPlan() {
             "PÁDUA FILHO, W. Engenharia de Software: Fundamentos, Métodos e Padrões. 3. ed. Rio de Janeiro: LTC, 2009. 1248 p. ISBN 9788521616504.",
           ],
           prerequisites: [
-            {
-              id: "exampleid",
-              name: "CB0534",
-              cod: "CB0534",
-              menu: "1. Gerenciamento de projeto, 2. Estimação de custos, 3. Análise e especificação de requisitos, 4. Especificações formais, 5. Interface com o usuário, 6. Modelagem de dados, 7. Técnicas e modelagens para projeto e implementação: arquitetura de projeto, projeto estruturado, projeto orientado a objetos, 8. Gerenciamento de versões e configurações, 9. Verificação: testes, revisões e inspeções, 10. Validação e certificação de qualidade, 11. Manutenção, 12. Documentação.",
-              curriculumId: "exampleid",
-              description: "bla bla bla",
-              isOptional: false,
-              workload: 96,
-              start: 0,
-              end: 0,
-              daysWeek: [],
-              bibliography: [],
-              prerequisites: []
-            }
+            "CB0534",
+            "CB0534",
           ],
           curriculumId: "exampleid",
           description: "bla bla bla",

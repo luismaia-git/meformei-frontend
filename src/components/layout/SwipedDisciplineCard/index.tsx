@@ -8,6 +8,7 @@ import { EditButton } from "../EditButton";
 import { DeleteButton } from "../DeleteButton";
 import { useUser } from "../../../hooks/useUser";
 import { useDisciplinesById } from "../../../servicesHooks/useDisciplinesById";
+import { Button, Touchable } from "react-native";
 
 interface SwipedDisciplineCardProps {
   data: DisciplineData;
@@ -44,7 +45,11 @@ export function SwipedDisciplineCard({
           rowRefs.set(item_key, ref);
         }
       }}
-      renderLeftActions={EditButton}
+      renderLeftActions={(progress, dragX) => (
+        <div onClick={onPressLeft}>
+          {EditButton(progress, dragX)}
+        </div>
+      )}
       renderRightActions={DeleteButton}
       onSwipeableWillOpen={() => onSwipeableWillOpen(item_key)}
     >
@@ -62,16 +67,16 @@ export function SwipedDisciplineCard({
             <H5 color={theme.colors.text}>Carga horária: {data.workload}h</H5>
             <H5 color={theme.colors.text}>
               Pré-requisitos:{" "}
-                { prerequisitesData && prerequisitesData.disciplines.length > 0
+              {prerequisitesData && prerequisitesData.disciplines.length > 0
                 ? prerequisitesData.disciplines.map((pr, i) => (
-                    <H5
-                      key={`${pr.cod}_${i}`}
-                      color={theme.colors.primary[500]}
-                    >
-                      {pr.name}
-                      {i !== data.prerequisites.length - 1 && ", "}
-                    </H5>
-                  ))
+                  <H5
+                    key={`${pr.cod}_${i}`}
+                    color={theme.colors.primary[500]}
+                  >
+                    {pr.name}
+                    {i !== data.prerequisites.length - 1 && ", "}
+                  </H5>
+                ))
                 : "-"}
             </H5>
           </VStack>
