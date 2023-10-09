@@ -26,8 +26,6 @@ export function SwipedDisciplinesByPeriod({
     });
   };
 
-  const onPressLeft = () => {}; // implementar essa funcão ( quando arrasta pra direita )
-
   const onPressRight = () => { // implementar essa funcão ( quando arrasta pra esquerda )
     
   };
@@ -45,17 +43,17 @@ export function SwipedDisciplinesByPeriod({
             <Divider /> 
           </HStack>
           {data?.disciplines?.map((d, i) => {
-            const props = { data: d };
+            const disciplineWithPeriod = { discipline: d , period: data.period};
             return (
               <SwipedDisciplineCard
                 onPress={() => navigation.navigate("DisciplineDetails", d)}
-                onPressLeft={onPressLeft}
+                onPressLeft={() => navigation.navigate("DisciplineEdit", disciplineWithPeriod )}
                 onPressRight={onPressRight}
                 onSwipeableWillOpen={swipeOpen}
                 item_key={i}
                 rowRefs={rowRefs}
                 key={`${d?.cod}_${i}`}
-                {...props}
+                data={d}
               />
             );
           })}

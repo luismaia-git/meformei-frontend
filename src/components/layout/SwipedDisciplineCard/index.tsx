@@ -44,7 +44,16 @@ export function SwipedDisciplineCard({
           rowRefs.set(item_key, ref);
         }
       }}
-      renderLeftActions={EditButton}
+      renderLeftActions={(progress, dragX) => (
+        <TouchableHighlight
+          style={{ borderRadius: 10, margin: 0 }}
+          activeOpacity={0.9}
+          onPress={onPressLeft}
+          underlayColor="transparent"
+        >
+          {EditButton(progress, dragX)}
+        </TouchableHighlight>
+      )}
       renderRightActions={DeleteButton}
       onSwipeableWillOpen={() => onSwipeableWillOpen(item_key)}
     >
@@ -62,16 +71,16 @@ export function SwipedDisciplineCard({
             <H5 color={theme.colors.text}>Carga horária: {data.workload}h</H5>
             <H5 color={theme.colors.text}>
               Pré-requisitos:{" "}
-                { prerequisitesData && prerequisitesData.disciplines.length > 0
+              {prerequisitesData && prerequisitesData.disciplines.length > 0
                 ? prerequisitesData.disciplines.map((pr, i) => (
-                    <H5
-                      key={`${pr.cod}_${i}`}
-                      color={theme.colors.primary[500]}
-                    >
-                      {pr.name}
-                      {i !== data.prerequisites.length - 1 && ", "}
-                    </H5>
-                  ))
+                  <H5
+                    key={`${pr.cod}_${i}`}
+                    color={theme.colors.primary[500]}
+                  >
+                    {pr.name}
+                    {i !== data.prerequisites.length - 1 && ", "}
+                  </H5>
+                ))
                 : "-"}
             </H5>
           </VStack>

@@ -17,6 +17,7 @@ interface InputSelectProps {
   values: SelectData[];
   touched?: boolean;
   errors?: string;
+  defaultValue?: string;
 }
 
 export function InputSelect({
@@ -25,6 +26,7 @@ export function InputSelect({
   values,
   touched,
   errors,
+  defaultValue
 }: InputSelectProps) {
   const theme = useTheme();
   return (
@@ -36,6 +38,7 @@ export function InputSelect({
       </Label>
 
       <Select
+        defaultValue={defaultValue}
         fontFamily="Nunito-Regular"
         fontSize={14}
         {...config}

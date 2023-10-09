@@ -16,6 +16,7 @@ import {
   BorderedContent,
   ScrollContainer
 } from "../styles";
+import { useDisciplinesById } from "../../../servicesHooks/useDisciplinesById";
 
 export function DisciplineDetails() {
   const { colors } = useThemeNative();
@@ -31,6 +32,8 @@ export function DisciplineDetails() {
       value: params.menu ?? "NENHUM",
     },
   ];
+
+  const { data: prerequisitesData } = useDisciplinesById(params.prerequisites);
 
   return (
     <ScrollContainer
@@ -93,12 +96,12 @@ export function DisciplineDetails() {
               <Divider flex={1} />
             </HStack>
 
-            {params.prerequisites.length < 1 ? (
+            { !prerequisitesData || prerequisitesData.disciplines.length < 1 ? (
               <H5 weight="regular" size={16}>
                 NENHUM
               </H5>
             ) : (
-              params.prerequisites.map((pr, i) => {
+              prerequisitesData.disciplines.map((pr, i) => {
                 return (
                   <HStack key={i} alignItems="center" space={2}>
                     <Icon as={Entypo} name="chevron-right" />

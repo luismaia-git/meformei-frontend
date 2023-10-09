@@ -1,6 +1,6 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AdditionalHour } from "AdditionalHours";
-import { DisciplineData } from "Discipline";
+import { DisciplineByPeriod, DisciplineData, DisciplineWithPeriod } from "Discipline";
 import { Profile } from "Profile";
 import { AccountInfo } from "User";
 
@@ -56,7 +56,7 @@ export type DisciplineParamList = {
   FormationPlan: undefined;
   DisciplineDetails: DisciplineData;
   DisciplineRegister: undefined;
-  DisciplineEdit: DisciplineData;
+  DisciplineEdit: DisciplineWithPeriod;
 };
 
 export type DisciplineProp = NativeStackNavigationProp<DisciplineParamList>;
