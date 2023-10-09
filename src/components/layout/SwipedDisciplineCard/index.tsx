@@ -46,9 +46,14 @@ export function SwipedDisciplineCard({
         }
       }}
       renderLeftActions={(progress, dragX) => (
-        <div onClick={onPressLeft}>
+        <TouchableHighlight
+          style={{ borderRadius: 10, margin: 0 }}
+          activeOpacity={0.9}
+          onPress={onPressLeft}
+          underlayColor="transparent"
+        >
           {EditButton(progress, dragX)}
-        </div>
+        </TouchableHighlight>
       )}
       renderRightActions={DeleteButton}
       onSwipeableWillOpen={() => onSwipeableWillOpen(item_key)}

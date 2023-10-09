@@ -26,8 +26,6 @@ export function SwipedDisciplinesByPeriod({
     });
   };
 
-  const onPressLeft = () => {}; // implementar essa funcão ( quando arrasta pra direita )
-
   const onPressRight = () => { // implementar essa funcão ( quando arrasta pra esquerda )
     
   };
@@ -49,7 +47,7 @@ export function SwipedDisciplinesByPeriod({
             return (
               <SwipedDisciplineCard
                 onPress={() => navigation.navigate("DisciplineDetails", d)}
-                onPressLeft={onPressLeft}
+                onPressLeft={() => navigation.navigate("DisciplineEdit", d)}
                 onPressRight={onPressRight}
                 onSwipeableWillOpen={swipeOpen}
                 item_key={i}
