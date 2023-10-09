@@ -51,5 +51,33 @@ declare module "User" {
     curriculumId: string;
   }
 
+  interface ProfileTO {
+    name: string;
+    lastname: string;
+    username: string;
+    email: string;
+    password: string;
+    registration: number;
+    curriculumId: string;
+    city: string;
+    state: string;
+    enrollmentSemester: number;
+    enrollmentYear: number;
+  }
+
   type Student = AccountInfo & GeneralInformation;
+}
+
+{
+  "name": "string",
+  "lastname": "string",
+  "username": "string",
+  "email": "string",
+  "password": "string",
+  "registration": "493450",
+  "curriculumId": "string",
+  "city": "string",
+  "state": "string",
+  "enrollmentSemester": 1,
+  "enrollmentYear": 2023
 }
