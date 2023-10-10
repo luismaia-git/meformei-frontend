@@ -51,6 +51,15 @@ declare module "User" {
     curriculumId: string;
   }
 
+  interface ProfileEdit{
+    name: string;
+    lastname: string;
+    username: string;
+    email: string;
+    city?: string;
+    state?: string;
+  }
+
   interface ProfileTO {
     name: string;
     lastname: string;
