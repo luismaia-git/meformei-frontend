@@ -51,7 +51,7 @@ declare module "User" {
     curriculumId: string;
   }
 
-  interface ProfileEdit{
+  interface ProfileEditTO{
     name: string;
     lastname: string;
     username: string;
@@ -77,16 +77,16 @@ declare module "User" {
   type Student = AccountInfo & GeneralInformation;
 }
 
-{
-  "name": "string",
-  "lastname": "string",
-  "username": "string",
-  "email": "string",
-  "password": "string",
-  "registration": "493450",
-  "curriculumId": "string",
-  "city": "string",
-  "state": "string",
-  "enrollmentSemester": 1,
-  "enrollmentYear": 2023
-}
+// {
+//   "name": "string",
+//   "lastname": "string",
+//   "username": "string",
+//   "email": "string",
+//   "password": "string",
+//   "registration": "493450",
+//   "curriculumId": "string",
+//   "city": "string",
+//   "state": "string",
+//   "enrollmentSemester": 1,
+//   "enrollmentYear": 2023
+// }

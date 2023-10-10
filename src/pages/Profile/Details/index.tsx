@@ -2,7 +2,8 @@ import { Divider, HStack, Icon, VStack, useTheme as useThemeNative } from 'nativ
 import { CustomizedStatusBar } from '../../../components/layout/CustomizedStatusBar';
 import { Header } from '../../../components/layout/Header';
 import { H5, Subtitle } from '../../../components/shared/text';
-import { BorderedContent, ScrollContainer } from '../../Discipline/styles';
+import { ScrollContainer } from '../../Discipline/styles';
+import { BorderedContent } from '../styles';
 import { ScrollContent } from './styles';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { ProfileParamList } from '../../../types/types';
@@ -10,7 +11,9 @@ import { useTheme } from "../../../hooks/useTheme";
 import { useUser } from "../../../hooks/useUser";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
+import { ProfileEdit } from '../Edit';
+import { ProfileEditTO } from 'User';
 
 export function ProfileDetails() {
   const { colors } = useThemeNative();
@@ -22,14 +25,28 @@ export function ProfileDetails() {
   const column = [
     { name: "Nome", value: user!.user.name },
     { name: "Sobrenome", value: user!.user.lastname },
-    { name: "UserName", value: user!.user.username},
+    { name: "UserName", value: user!.user.username },
     { name: "Email", value: user!.user.email },
     { name: "Cidade", value: user!.user.city },
     { name: "Estado", value: user!.user.state },
   ];
 
+  const profileEditTO : ProfileEditTO = {
+    name: user!.user.name,
+    lastname: user!.user.lastname,
+    username: user!.user.username,
+    email: user!.user.email,
+    city: user!.user.city,
+    state: user!.user.state,
+  }
+
+
+
   return (
-    <ScrollContainer>
+    <ScrollContainer
+    contentContainerStyle={{ flexGrow: 1 }}
+    showsVerticalScrollIndicator={false}>
+      
       <CustomizedStatusBar />
       <Header
         backButton
@@ -37,34 +54,19 @@ export function ProfileDetails() {
         colorText={theme.colors.text}
         rightButton={() => (
           <TouchableOpacity
-            onPress={() => navigation.navigate("ProfileEdit")}
+            onPress={() => navigation.navigate("Profile", {screen:"ProfileEdit"})}
           >
-            <Icon
-              as={Ionicons}
-              name="md-pencil"
-              color={theme.colors.text}
-              size={30}
-            />
+            <Icon as={Feather} name="edit" size="10" color="#ffffff" />
           </TouchableOpacity>
         )}
       />
       <BorderedContent>
         <VStack space={6}>
-          <VStack>
-            <H5 color={colors.trueGray[400]}>
-              #{user!.user.name}
-            </H5>
-            <Subtitle  size={26}>
-              {user!.user.lastname}
-            </Subtitle>
-
-            
-          </VStack>
 
           {column.map((v, i) => {
             return (
               <VStack key={i} space={2}>
-                <HStack alignItems="center" space={3}>
+                <HStack alignItems="center" space={10}>
                   <H5 size={16}>{v.name.toUpperCase()}</H5>
                   <Divider flex={1} />
                 </HStack>
