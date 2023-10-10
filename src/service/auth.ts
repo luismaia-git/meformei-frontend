@@ -1,13 +1,9 @@
 import { StudentSignup } from "Auth";
 import { User, UserLogin } from "User";
-import api from "./config/api";
+import api, { getToken } from "./config/api";
 import { callService } from "./config/service";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
-export const getToken = async () => {
-  const token = await AsyncStorage.getItem("token");
-  return token;
-};
+
 
 const service = () => {
   const resource = "auth";

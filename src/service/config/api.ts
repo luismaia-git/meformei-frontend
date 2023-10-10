@@ -1,5 +1,9 @@
 import axios from "axios";
-import { getToken } from "../auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+export const getToken = async () => {
+  const token = await AsyncStorage.getItem("token");
+  return token;
+};
 
 const api = axios.create({
   baseURL: process.env.API_URL || "http://204.216.155.107:3000/",
