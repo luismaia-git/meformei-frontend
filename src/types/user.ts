@@ -63,15 +63,25 @@ declare module "User" {
   interface ProfileTO {
     name: string;
     lastname: string;
-    username: string;
-    email: string;
-    password: string;
+    username?: string;
+    email?: string;
+    password?: string;
     registration: number;
     curriculumId: string;
     city: string;
     state: string;
     enrollmentSemester: number;
     enrollmentYear: number;
+  }
+
+  interface UserPatchRequest {
+    name?: string;
+    lastname?: string;
+    email?: string;
+    password?: string;
+    registration?: string;
+    city?: string;
+    state?: string;
   }
 
   type Student = AccountInfo & GeneralInformation;

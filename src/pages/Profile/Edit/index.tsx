@@ -9,31 +9,40 @@ import { InputSelect, InputText } from "../../../components/layout/UI";
 import { H5 } from "../../../components/shared/text";
 import { useUser } from "../../../hooks/useUser";
 import { BorderedContent, Container } from "../styles";
-import { ProfileEditTO } from "User";
+import { ProfileEditTO, ProfileTO, UserPatchRequest } from "User";
+import { ProfilerProps } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../../../servicesHooks/useAuth";
 
 export function ProfileEdit() {
   const theme = useTheme();
   const { user, updateUser } = useUser();
+  const { patchStudent } = useAuth();
+  const navigation = useNavigation<any>();
 
   let profileEditValidationSchema = yup.object().shape({
     name: yup.string().required("O nome obrigatório."),
     lastname: yup.string().required("O sobrenome obrigatório."),
   });
 
-  async function submit(values: any) {
-    // const calculatedSemester =
-    //   ((currentYear - Number(values.enrollmentYear)) * 12) / 6 + 1;
-
-    const student: ProfileEditTO = {
-      ...values,
-    };
-    if (values.name != user?.user.name || values.lastname != user?.user.lastname) {
-
-      //await postStudent(student, toHome);
+  const toDetails = (goBack: any) => {
+    if(goBack) {
+      navigation.goBack();
     }
   };
+
+  async function submit(values: any) {
+  
+    const student: UserPatchRequest = {
+      ...values,
+    };
+      
+      await patchStudent(student, toDetails);
+  };
   return (
-    <Container>
+    <Container 
+    contentContainerStyle={{ flexGrow: 1 }}
+    showsVerticalScrollIndicator={false}>
       <CustomizedStatusBar />
       <KeyboardAvoidingView
         style={{ flex: 1, backgroundColor: theme.colors.background }}
@@ -117,7 +126,7 @@ export function ProfileEdit() {
                 />
 
                 <HStack space={3}>
-                  <Button flex={1} marginTop={30} mt="5" onPress={() => { handleSubmit }}>
+                  <Button flex={1} marginTop={30} mt="5" onPress={() => handleSubmit()}>
                     <H5 color={theme.colors.white}>Confirmar</H5>
                   </Button>
                   <Button flex={1} variant="outline" marginTop={30} mt="5">

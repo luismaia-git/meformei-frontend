@@ -66,7 +66,7 @@ export function ProfileDetails() {
           {column.map((v, i) => {
             return (
               <VStack key={i} space={2}>
-                <HStack alignItems="center" space={10}>
+                <HStack alignItems="center" space={2}>
                   <H5 size={16}>{v.name.toUpperCase()}</H5>
                   <Divider flex={1} />
                 </HStack>
