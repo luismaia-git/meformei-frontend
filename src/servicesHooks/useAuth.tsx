@@ -39,7 +39,7 @@ export function useAuth() {
     console.log(data);
     auth
     students.
-      patchStudent(data)
+      patchStudent(user!.user.studentId, data)
       .then(() =>
         toDetails(true)
       )

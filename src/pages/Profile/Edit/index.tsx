@@ -26,23 +26,24 @@ export function ProfileEdit() {
   });
 
   const toDetails = (goBack: any) => {
-    if(goBack) {
+    if (goBack) {
       navigation.goBack();
     }
   };
 
   async function submit(values: any) {
-  
+
     const student: UserPatchRequest = {
       ...values,
     };
-      
-      await patchStudent(student, toDetails);
+
+    await patchStudent(student, toDetails);
   };
+  console.log("user:", user);
   return (
-    <Container 
-    contentContainerStyle={{ flexGrow: 1 }}
-    showsVerticalScrollIndicator={false}>
+    <Container
+      contentContainerStyle={{ flexGrow: 1 }}
+      showsVerticalScrollIndicator={false}>
       <CustomizedStatusBar />
       <KeyboardAvoidingView
         style={{ flex: 1, backgroundColor: theme.colors.background }}
@@ -69,24 +70,36 @@ export function ProfileEdit() {
           onSubmit={(values) => submit(values)}
           validationSchema={profileEditValidationSchema}
         >
-          {({ handleChange, handleSubmit, values, isValid }) => (
+          {({ handleChange, handleBlur, handleSubmit, values, isValid }) => (
             <BorderedContent>
               <VStack space={6} mt="5" paddingBottom={30}>
 
                 <InputText
                   label="Nome"
-                  defaultValue={user!.user.name}
-                  config={{ placeholder: "Nome" }}
+                  config={{
+                    placeholder: "Nome",
+                    onChangeText: handleChange("name"),
+                    onBlur: handleBlur("name"),
+                    value: values.name,
+                  }}
                 />
 
                 <InputText
                   label="Sobrenome"
-                  defaultValue={user!.user.lastname}
-                  config={{ placeholder: "Sobrenome" }}
+                  config={{
+                    placeholder: "Sobrenome",
+                    onChangeText: handleChange("lastname"),
+                    onBlur: handleBlur("lastname"),
+                    value: values.lastname,
+                  }}
                 />
 
                 <InputSelect
-                  config={{ placeholder: "Estado" }}
+                  config={{
+                    placeholder: "Estado",
+                    onValueChange: handleChange("state"),
+                    defaultValue: user!.user.state,
+                  }}
                   values={[
                     { label: "AC", value: "AC" },
                     { label: "AL", value: "AL" },

@@ -23,11 +23,12 @@ export type GetDisciplinesPeriodTodoParams = {
 const service = () => {
   const resource = "students";
 
-  async function patchStudent(value: UserPatchRequest) {
-    const path = `${resource}/${value.registration}}`;
+  async function patchStudent(studentId: string, value: UserPatchRequest) {
+    const path = `${resource}/${studentId}`;
     const response = await callService(() =>
       api.patch<{ user: User }>(path, value)
     );
+    console.log("response.data:", response.data);
     return response.data.user;
   }
 
