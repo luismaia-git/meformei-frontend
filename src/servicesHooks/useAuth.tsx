@@ -1,13 +1,14 @@
 import { StudentSignup } from "Auth";
-import { User } from "User";
+import { ProfileTO, User, UserPatchRequest } from "User";
 import { useMemo, useState } from "react";
 import { useUser } from "../hooks/useUser";
 import { auth } from "../service/auth";
+import { students } from "../service/students";
 
 export function useAuth() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<any>(null);
-  const {user, handleUser} = useUser()
+  const { user, handleUser } = useUser()
   const isAutheticated = !!user
   const [data, setData] = useState<User>();
 
@@ -16,11 +17,11 @@ export function useAuth() {
     setLoading(true);
     auth
       .postStudent(data)
-      .then(() => 
+      .then(() =>
         toHome(true)
       )
-      .catch((e) =>{
-        
+      .catch((e) => {
+
         console.log(e)
         toHome(error)
       }
@@ -33,5 +34,20 @@ export function useAuth() {
       });
   }
 
-  return useMemo(() => ({ loading, error, postStudent, isAutheticated}), [loading, error]);
+  function patchStudent(data: UserPatchRequest, toDetails: (screen: any) => void) {
+    setLoading(true);
+    console.log(data);
+    auth
+    students.
+      patchStudent(data)
+      .then(() =>
+        toDetails(true)
+      )
+      .catch((e) => {
+        toDetails(false)
+        console.log(e)
+      })
+  }
+
+  return useMemo(() => ({ loading, error, postStudent, isAutheticated, patchStudent }), [loading, error]);
 }

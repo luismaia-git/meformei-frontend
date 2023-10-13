@@ -51,12 +51,21 @@ declare module "User" {
     curriculumId: string;
   }
 
-  interface ProfileTO {
+  interface ProfileEditTO{
     name: string;
     lastname: string;
     username: string;
     email: string;
-    password: string;
+    city?: string;
+    state?: string;
+  }
+
+  interface ProfileTO {
+    name: string;
+    lastname: string;
+    username?: string;
+    email?: string;
+    password?: string;
     registration: number;
     curriculumId: string;
     city: string;
@@ -65,19 +74,29 @@ declare module "User" {
     enrollmentYear: number;
   }
 
+  interface UserPatchRequest {
+    name?: string;
+    lastname?: string;
+    email?: string;
+    password?: string;
+    registration?: string;
+    city?: string;
+    state?: string;
+  }
+
   type Student = AccountInfo & GeneralInformation;
 }
 
-{
-  "name": "string",
-  "lastname": "string",
-  "username": "string",
-  "email": "string",
-  "password": "string",
-  "registration": "493450",
-  "curriculumId": "string",
-  "city": "string",
-  "state": "string",
-  "enrollmentSemester": 1,
-  "enrollmentYear": 2023
-}
+// {
+//   "name": "string",
+//   "lastname": "string",
+//   "username": "string",
+//   "email": "string",
+//   "password": "string",
+//   "registration": "493450",
+//   "curriculumId": "string",
+//   "city": "string",
+//   "state": "string",
+//   "enrollmentSemester": 1,
+//   "enrollmentYear": 2023
+// }

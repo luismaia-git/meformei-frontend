@@ -2,7 +2,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AdditionalHour } from "AdditionalHours";
 import { DisciplineByPeriod, DisciplineData, DisciplineWithPeriod } from "Discipline";
 import { Profile } from "Profile";
-import { AccountInfo } from "User";
+import { AccountInfo, ProfileEditTO } from "User";
 
 export type UserLoginNavigatorParamList = {
   Login: undefined;
@@ -64,7 +64,7 @@ export type DisciplineProp = NativeStackNavigationProp<DisciplineParamList>;
 export type ProfileParamList = {
   ProfileHome: undefined;
   ProfileRegister: undefined;
-  ProfileEdit: undefined;
+  ProfileEdit: Profile;
   ProfileDetails: Profile;
 };
 

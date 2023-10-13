@@ -1,7 +1,7 @@
 import { DisciplineByPeriod } from "Discipline";
 import api from "./config/api";
 import { callService } from "./config/service";
-import { ProfileTO } from "User";
+import { ProfileTO, User, UserPatchRequest } from "User";
 
 export type StatusType =
   | "DONE"
@@ -23,12 +23,12 @@ export type GetDisciplinesPeriodTodoParams = {
 const service = () => {
   const resource = "students";
 
-  async function updateProfile(value: ProfileTO) {
+  async function patchStudent(value: UserPatchRequest) {
     const path = `${resource}/${value.registration}}`;
     const response = await callService(() =>
-      api.patch<{ ProfileTO: ProfileTO }>(path, value)
+      api.patch<{ user: User }>(path, value)
     );
-    return response.data.ProfileTO;
+    return response.data.user;
   }
 
   async function getDisciplinesPeriodByStatus({
@@ -66,7 +66,7 @@ const service = () => {
   return {
     getDisciplinesPeriodByStatus,
     getDisciplinesPeriodTodo,
-    updateProfile,
+    patchStudent,
   };
 };
 
