@@ -91,20 +91,6 @@ export function FormationPlan() {
     );
   };
 
-  function renderCard(itens: ListRenderItemInfo<DisciplineByPeriod>) {
-    const { item } = itens;
-    // adicionar condição se o status for tipo a Fazer, Trancada e Reprovadas, renderiza o Componente <DisciplinesByPeriod/>
-
-    //else
-    return (
-      <SwipedDisciplinesByPeriod
-        data={item}
-        key={`${item.period}_${itens.index}`}
-        {...item}
-      />
-    );
-  }
-
   const data: DisciplineByPeriod[] = [
     {
       period: 3,
@@ -180,6 +166,19 @@ export function FormationPlan() {
     },
   ];
 
+  function renderCard(
+    item: DisciplineByPeriod,
+    i: number
+  ) {
+    return (
+      <SwipedDisciplinesByPeriod
+        data={item}
+        key={`${item.period}_${i}`}
+        {...item}
+      />
+    );
+  }
+
   const filteredList =
     termo.length > 0
       ? disciplines?.map((d) => {
@@ -208,15 +207,7 @@ export function FormationPlan() {
             {/* Integração: so mudar o data para filteredList */}
               {data?.length > 0 ?
                 (<VStack space={2}>
-                  {data?.map((item, i) => {
-                    return (
-                      <SwipedDisciplinesByPeriod
-                        data={item}
-                        key={`${item.period}_${i}`}
-                        {...item}
-                      />
-                    );
-                  })}
+                  {data?.map(renderCard)}
                 </VStack>
                 ) : (
                   <View justifyContent="center" alignItems="center" marginTop={20}>

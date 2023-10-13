@@ -77,7 +77,4 @@ export function DisciplineEdit() {
     </Container>
   );
 }
-function useThemeNative(): { colors: any; } {
-  throw new Error("Function not implemented.");
-}
 
