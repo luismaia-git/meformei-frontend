@@ -2,6 +2,7 @@ import { DisciplineByPeriod } from "Discipline";
 import api from "./config/api";
 import { callService } from "./config/service";
 import { ProfileTO, User, UserPatchRequest } from "User";
+import { Student } from "../types/types";
 
 export type StatusType =
   | "DONE"
@@ -26,10 +27,10 @@ const service = () => {
   async function patchStudent(studentId: string, value: UserPatchRequest) {
     const path = `${resource}/${studentId}`;
     const response = await callService(() =>
-      api.patch<{ user: User }>(path, value)
+      api.patch<{ message: string, student: Student }>(path, value)
     );
     console.log("response.data:", response.data);
-    return response.data.user;
+    return response.data.student;
   }
 
   async function getDisciplinesPeriodByStatus({

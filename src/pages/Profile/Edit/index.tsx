@@ -25,7 +25,7 @@ export function ProfileEdit() {
     lastname: yup.string().required("O sobrenome obrigatório."),
   });
 
-  const toDetails = (goBack: any) => {
+  const toDetails = (goBack: boolean) => {
     if (goBack) {
       navigation.goBack();
     }
@@ -98,7 +98,7 @@ export function ProfileEdit() {
                   config={{
                     placeholder: "Estado",
                     onValueChange: handleChange("state"),
-                    defaultValue: user!.user.state,
+                    defaultValue: values.state,
                   }}
                   values={[
                     { label: "AC", value: "AC" },
@@ -134,8 +134,12 @@ export function ProfileEdit() {
 
                 <InputText
                   label="Cidade"
-                  defaultValue={user!.user.city}
-                  config={{ placeholder: "Cidade" }}
+                  config={{
+                    placeholder: "Cidade",
+                    onChangeText: handleChange("city"),
+                    onBlur: handleBlur("city"),
+                    value: values.city,
+                  }}
                 />
 
                 <HStack space={3}>
@@ -143,7 +147,7 @@ export function ProfileEdit() {
                     <H5 color={theme.colors.white}>Confirmar</H5>
                   </Button>
                   <Button flex={1} variant="outline" marginTop={30} mt="5">
-                    <H5 color={theme.colors.text}>Cancelar</H5>
+                    <H5 color={theme.colors.text} onPress={() => navigation.goBack()}>Cancelar</H5>
                   </Button>
                 </HStack>
               </VStack>

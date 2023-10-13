@@ -40,9 +40,11 @@ export function useAuth() {
     auth
     students.
       patchStudent(user!.user.studentId, data)
-      .then(() =>
-        toDetails(true)
-      )
+      .then((res) => {
+        console.log("res:", res)
+        handleUser({...user!, user: { ...user!.user, ...res}});
+        toDetails(true);
+      })
       .catch((e) => {
         toDetails(false)
         console.log(e)

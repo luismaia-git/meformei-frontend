@@ -2,6 +2,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AdditionalHour } from "AdditionalHours";
 import { DisciplineByPeriod, DisciplineData, DisciplineWithPeriod } from "Discipline";
 import { Profile } from "Profile";
+import { University } from "University";
 import { AccountInfo, ProfileEditTO } from "User";
 
 export type UserLoginNavigatorParamList = {
@@ -69,3 +70,23 @@ export type ProfileParamList = {
 };
 
 export type ProfileProp = NativeStackNavigationProp<ProfileParamList>;
+
+export type Student = {
+  id: string;
+  studentId: string;
+  name: string;
+  lastname: string;
+  username: string;
+  email: string;
+  registration: string;
+  inative: null | string; // Assuming 'inative' can be null or a string
+  avatar: null | string; // Assuming 'avatar' can be null or a string
+  curriculumId: string;
+  city: string;
+  state: string;
+  currentSemester: number;
+  enrollmentSemester: number;
+  enrollmentYear: number;
+  courseName: string;
+  university: University;
+}
