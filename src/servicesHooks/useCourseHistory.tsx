@@ -11,10 +11,10 @@ export function useCourseHistory() {
   const { user } = useUser();
 
   useEffect(() => {
-    getCourseHistory({ studentRegistration: user!.user?.registration });
+    fetchCourseHistory({ studentRegistration: user!.user?.registration });
   }, [user]);
 
-  function getCourseHistory(data: GetCourseHistoryParams) {
+  function fetchCourseHistory(data: GetCourseHistoryParams) {
     setLoading(true);
     students
       .getCourseHistory({
@@ -27,5 +27,5 @@ export function useCourseHistory() {
 
 
 
-  return useMemo(() => ({ loading, error, courseHistory, getCourseHistory }), [loading, error, courseHistory, getCourseHistory]);
+  return useMemo(() => ({ loading, error, courseHistory, fetchCourseHistory }), [loading, error, courseHistory, fetchCourseHistory]);
 }
