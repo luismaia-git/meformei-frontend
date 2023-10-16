@@ -18,6 +18,8 @@ import { useUser } from "../../../hooks/useUser";
 import { useDisciplines } from "../../../servicesHooks/useDisciplines";
 import { DisciplineProp } from "../../../types/types";
 import { Container, Content, ScrollContainer } from "../styles";
+import { useCourseHistory } from "../../../servicesHooks/useCourseHistory";
+import { CourseHistoryByPeriod } from "CourseHistory";
 
 // type StatusTypeWithTodo =  "TODO" | StatusType  
 export function FormationPlan() {
@@ -26,27 +28,27 @@ export function FormationPlan() {
   const { user } = useUser()
   const [status, setStatus] = useState<string>("INPROGRESS")
   const [termo, setTermo] = useState("");
+  const [filteredList, setFilteredList] = useState<CourseHistoryByPeriod[]>([]);
+  const { loading, courseHistory, fetchCourseHistory } = useCourseHistory();
 
-  const { disciplines, loading, getDisciplinesPeriodByStatus, getDisciplinesPeriodTodo } = useDisciplines();
-  async function fetchDisciplinesByStatus() {
-    await getDisciplinesPeriodByStatus({ status: status, studentRegistration: user?.user?.registration ?? "" })
-  }
-
-  async function fetchDisciplinesTodo() {
-    await getDisciplinesPeriodTodo({ studentRegistration: user?.user?.registration ?? "", curriculumId: user?.user?.curriculumId ?? "" })
-  }
   useEffect(() => {
-    if (status == "TODO") {
-      fetchDisciplinesTodo()
-
-    }
-    if (status != "TODO") {
-      fetchDisciplinesByStatus()
-    }
-
-  }, [status])
-
-
+    fetchCourseHistory({ studentRegistration: user!.user?.registration });
+    const filteredList =
+      termo.length > 0
+        ? courseHistory?.disciplineHistory.map((d) => {
+          return {
+            ...d,
+            disciplines: d.disciplines.filter(
+              (dc) =>
+                dc.status == status &&
+                (dc.name.toLowerCase().includes(termo.toLowerCase()) ||
+                  dc.cod.toLowerCase().includes(termo.toLowerCase()))
+            ),
+          };
+        })
+          .filter((d) => d.disciplines.length > 0)
+        : courseHistory
+  }, [user, loading, termo, status]);
 
   const HeaderElement = () => {
     return (
@@ -179,22 +181,6 @@ export function FormationPlan() {
     );
   }
 
-  const filteredList =
-    termo.length > 0
-      ? disciplines?.map((d) => {
-        return {
-          ...d,
-          disciplines: d.disciplines.filter(
-            (dc) =>
-              dc.name.toLowerCase().includes(termo.toLowerCase()) ||
-              dc.cod.toLowerCase().includes(termo.toLowerCase())
-          ),
-        };
-      })
-        .filter((d) => d.disciplines.length > 0)
-      : disciplines
-
-
   return (
     <ScrollContainer>
       {loading ? (
@@ -205,15 +191,15 @@ export function FormationPlan() {
           <Content>
             <HeaderElement />
             {/* Integração: so mudar o data para filteredList */}
-              {data?.length > 0 ?
-                (<VStack space={2}>
-                  {data?.map(renderCard)}
-                </VStack>
-                ) : (
-                  <View justifyContent="center" alignItems="center" marginTop={20}>
-                    <H5>Nenhum resultado foi encontrado</H5>
-                  </View>
-                )}
+            {filteredList?.length > 0 ?
+              (<VStack space={2}>
+                {filteredList?.map(renderCard)}
+              </VStack>
+              ) : (
+                <View justifyContent="center" alignItems="center" marginTop={20}>
+                  <H5>Nenhum resultado foi encontrado</H5>
+                </View>
+              )}
           </Content>
         </>)
       }

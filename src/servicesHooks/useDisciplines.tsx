@@ -29,15 +29,5 @@ export function useDisciplines() {
     .finally(() => setLoading(false));
   }
 
-  function getDisciplinesPeriodTodo(data: { curriculumId: string } & GetDisciplinesPeriodTodoParams) {
-    setLoading(true);
-    students.getDisciplinesPeriodTodo(data)
-    .then((res) => setDisciplines(res))
-    .catch((err) => setError(err))
-    .finally(() => setLoading(false));
-  }
-
-
-
-  return useMemo(() => ({ loading, error, data, getDisciplinesPeriodByStatus, getDisciplinesPeriodTodo, disciplines }), [loading, error, data, disciplines]);
+  return useMemo(() => ({ loading, error, data, getDisciplinesPeriodByStatus, disciplines }), [loading, error, data, disciplines]);
 }
