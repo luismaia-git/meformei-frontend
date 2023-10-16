@@ -3,7 +3,6 @@ import api from "./config/api";
 import { callService } from "./config/service";
 import { ProfileTO, User, UserPatchRequest } from "User";
 import { Student } from "../types/types";
-import { CourseHistoryToFrontResponse } from "CourseHistory";
 
 export type StatusType =
   | "DONE"
@@ -53,17 +52,18 @@ const service = () => {
     return response.data.disciplineHistory;
   }
 
-  async function getCourseHistory({
+  async function getDisciplinesPeriodTodo({
     studentRegistration,
-  }: { studentRegistration: string }) {
-    const path = `${resource}/${studentRegistration}/courseHistory`;
+    curriculumId,
+  }: { curriculumId: string } & GetDisciplinesPeriodTodoParams) {
+    const path = `${resource}/${studentRegistration}/disciplines/todo`;
     const response = await callService(() =>
-      api.get<CourseHistoryToFrontResponse>(path)
+      api.post<{ disciplines: DisciplineByPeriod[] }>(path, {
+        curriculumId,
+      })
     );
-    return response.data;
+    return response.data.disciplines;
   }
-
-  
 
   return {
     getDisciplinesPeriodByStatus,
