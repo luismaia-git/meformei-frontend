@@ -1,12 +1,11 @@
-import { DisciplineByPeriod } from "Discipline";
 import { useEffect, useMemo, useState } from "react";
 import { useUser } from "../hooks/useUser";
 import { GetDisciplinesPeriodByStatusParams, GetDisciplinesPeriodTodoParams, students } from "../service/students";
 import { university } from "../service/universities";
+import { CourseHistory } from "CourseHistory";
 
 export function useCourseHistory() {
-  const [data, setData] = useState<DisciplineByPeriod[]>([]);
-  const [disciplines, setDisciplines] = useState<DisciplineByPeriod[]>([]);
+  const [courseHistory, setCourseHistory] = useState<CourseHistory[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string[]>();
 
