@@ -3,7 +3,7 @@ declare module "CourseHistory" {
 
     export type DayOfWeekType = 'DOM' | 'SEG' | 'TER' | 'QUA' | 'QUI' | 'SEX' | 'SAB';
 
-    interface DisciplineToFront {
+    interface Discipline {
         id: string;
         courseHistoryId: string;
         name: string;
@@ -21,13 +21,13 @@ declare module "CourseHistory" {
         status: StatusType; 
     }
 
-    interface ToFront {
+    interface CourseHistoryByPeriod {
         period: number;
-        disciplines: DisciplineToFront[];
+        disciplines: Discipline[];
     }
     
-    interface CourseHistoryToFrontResponse {
-        disciplineHistory: ToFront[];
+    interface CourseHistory {
+        disciplineHistory: CourseHistoryByPeriod[];
     }
 
 }
