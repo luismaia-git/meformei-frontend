@@ -56,9 +56,11 @@ export function ProfileDetails() {
           <TouchableOpacity
             onPress={() => navigation.navigate("Profile", {screen:"ProfileEdit"})}
           >
-            <Icon as={Feather} name="edit" size="10" color="#ffffff" />
+            <Icon as={Feather} name="edit" size="10" color={theme.colors.text} />
           </TouchableOpacity>
         )}
+        title="Perfil"
+        // align="left"
       />
       <BorderedContent>
         <VStack space={6}>

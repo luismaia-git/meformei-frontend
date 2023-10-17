@@ -25,30 +25,28 @@ import { CourseHistoryByPeriod } from "CourseHistory";
 export function FormationPlan() {
   const { theme } = useTheme();
   const navigation = useNavigation<DisciplineProp>();
-  const { user } = useUser()
-  const [status, setStatus] = useState<string>("INPROGRESS")
+  const [status, setStatus] = useState<string>("ANY")
   const [termo, setTermo] = useState("");
   const [filteredList, setFilteredList] = useState<CourseHistoryByPeriod[]>([]);
-  const { loading, courseHistory, fetchCourseHistory } = useCourseHistory();
+  const { loading, courseHistory } = useCourseHistory();
 
   useEffect(() => {
-    fetchCourseHistory({ studentRegistration: user!.user?.registration });
-    const filteredList =
-      termo.length > 0
-        ? courseHistory?.disciplineHistory.map((d) => {
-          return {
-            ...d,
-            disciplines: d.disciplines.filter(
-              (dc) =>
-                dc.status == status &&
-                (dc.name.toLowerCase().includes(termo.toLowerCase()) ||
-                  dc.cod.toLowerCase().includes(termo.toLowerCase()))
-            ),
-          };
-        })
-          .filter((d) => d.disciplines.length > 0)
-        : courseHistory
-  }, [user, loading, termo, status]);
+    setFilteredList(
+      courseHistory?.disciplineHistory.map((d) => {
+        return {
+          ...d,
+          disciplines: d.disciplines.filter(
+            (dc) =>
+              (status == "ANY" || dc.status == status) &&
+              (termo.length == 0 ||
+                dc.name.toLowerCase().includes(termo.toLowerCase()) ||
+                dc.cod.toLowerCase().includes(termo.toLowerCase()))
+          ),
+        };
+      })
+        .filter((d) => d.disciplines.length > 0) ?? []);
+
+  }, [courseHistory, termo, status]);
 
   const HeaderElement = () => {
     return (
@@ -57,7 +55,8 @@ export function FormationPlan() {
           isSpaced={false}
           backButton
           colorIcon={theme.colors.text}
-          colorText={theme.colors.white}
+          colorText={theme.colors.text}
+          title="Plano de Formação"
         />
         <SearchInput
           flex={0}
@@ -74,9 +73,10 @@ export function FormationPlan() {
                 setStatus(value)
               },
               placeholder: "Selecione um filtro",
-              defaultValue: "INPROGRESS",
+              defaultValue: "ANY",
             }}
             values={[
+              { label: "Todas", value: "ANY" },
               { label: "Em andamento", value: "INPROGRESS" },
               { label: "A Fazer", value: "TODO" },
               { label: "Concluídas", value: "DONE" },

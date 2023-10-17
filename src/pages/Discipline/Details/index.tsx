@@ -44,7 +44,8 @@ export function DisciplineDetails() {
       <Header
         backButton
         colorIcon={theme.colors.text}
-        colorText={theme.colors.white}
+        colorText={theme.colors.text}
+        title="Disciplina"
       />
       <BorderedContent>
         <VStack space={6}>

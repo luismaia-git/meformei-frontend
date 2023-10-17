@@ -61,9 +61,11 @@ const service = () => {
     studentRegistration,
   }: GetCourseHistoryParams) {
     const path = `${resource}/${studentRegistration}/courseHistory`;
+    console.log("path:", path);
     const response = await callService(() =>
       api.get<CourseHistory>(path)
     );
+    console.log("response.data:", response.data);
     return response.data;
   }
 

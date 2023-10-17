@@ -54,7 +54,6 @@ export function HourHome() {
       <CustomizedStatusBar backgroundColor={theme.colors.primary[500]} />
       <Header
         props={{
-          justifyContent: "center",
           backgroundColor: theme.colors.primary[500],
         }}
         colorIcon={theme.colors.text}

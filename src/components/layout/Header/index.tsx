@@ -35,15 +35,15 @@ export function Header({
       justifyContent={props?.justifyContent ?? "space-between"}
       style={{ padding: isSpaced ? 20 : 0 }}
     >
-      {backButton && (
+      {(backButton && (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon as={Entypo} name="chevron-left" size={36} color={colorIcon} />
         </TouchableOpacity>
-      )}
+      )) || <View size={36} />}
       <Subtitle align={align} color={colorText} size={22}>
         {title}
       </Subtitle>
-      <View position="absolute" right={6} zIndex={10}>
+      <View position="relative" zIndex={10} size={36}>
         {rightButton && <Component />}
       </View>
     </Container>
