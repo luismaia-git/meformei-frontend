@@ -25,6 +25,11 @@ export type GetCourseHistoryParams = {
   studentRegistration: string;
 };
 
+export type deleteCourseHistoryParams = {
+  studentRegistration: string;
+  courseHistoryId: string;
+};
+
 
 const service = () => {
   const resource = "students";
@@ -69,10 +74,24 @@ const service = () => {
     return response.data;
   }
 
+  async function deleteCourseHistory({
+    studentRegistration,
+    courseHistoryId,
+  }: deleteCourseHistoryParams) {
+    const path = `${resource}/${studentRegistration}/courseHistory/${courseHistoryId}`;
+    console.log("path:", path);
+    const response = await callService(() =>
+      api.delete<any>(path)
+    );
+    console.log("response.data:", response.data);
+    return response.data;
+  }
+
   return {
     getDisciplinesPeriodByStatus,
     getCourseHistory,
     patchStudent,
+    deleteCourseHistory,
   };
 };
 

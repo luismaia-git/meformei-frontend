@@ -27,8 +27,8 @@ export function FormationPlan() {
   const navigation = useNavigation<DisciplineProp>();
   const [status, setStatus] = useState<string>("ANY")
   const [termo, setTermo] = useState("");
-  const [filteredList, setFilteredList] = useState<CourseHistoryByPeriod[]>([]);
-  const { loading, courseHistory } = useCourseHistory();
+  const { loading, courseHistory,  } = useCourseHistory();
+  const [filteredList, setFilteredList] = useState<CourseHistoryByPeriod[]>([]); 
 
   useEffect(() => {
     setFilteredList(

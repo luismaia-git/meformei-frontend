@@ -1,11 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
-import { DisciplineByPeriod } from "Discipline";
+import { DisciplineByPeriod, DisciplineData } from "Discipline";
 import { Divider, HStack, VStack, useTheme } from "native-base";
 import { useUser } from "../../../hooks/useUser";
 import { DisciplineProp } from "../../../types/types";
 import { H5 } from "../../shared/text";
 import { SwipedDisciplineCard } from "../SwipedDisciplineCard";
 import { Container } from "./styles";
+import { useCourseHistory } from "../../../servicesHooks/useCourseHistory";
 
 interface SwipedDisciplinesByPeriodProps {
   data: DisciplineByPeriod;
@@ -14,9 +15,10 @@ interface SwipedDisciplinesByPeriodProps {
 export function SwipedDisciplinesByPeriod({
   data,
 }: SwipedDisciplinesByPeriodProps) {
-  const {user} = useUser()
+  const { user } = useUser()
   const theme = useTheme();
   const navigation = useNavigation<DisciplineProp>();
+  const { deleteCourseHistory, courseHistory } = useCourseHistory();
 
   let rowRefs = new Map();
 
@@ -26,38 +28,41 @@ export function SwipedDisciplinesByPeriod({
     });
   };
 
-  const onPressRight = () => { // implementar essa funcão ( quando arrasta pra esquerda )
-    
+  const onPressRight = (d: DisciplineData) => {
+    console.log("right: " + d.courseHistoryId)
+    deleteCourseHistory(d.courseHistoryId);
   };
 
   return (
     <Container>
-        <VStack space={3}>
-          <HStack alignItems="center" space={3}>
-            <H5 style={{ paddingVertical: 8 }} color={theme.colors.trueGray[400]}>
+      <VStack space={3}>
+        <HStack alignItems="center" space={3}>
+          <H5 style={{ paddingVertical: 8 }} color={theme.colors.trueGray[400]}>
             {data?.period}
-            {data?.period  !== user?.user.currentSemester && " PERÍODO"}
-              {/* {data?.period}
+            {data?.period !== user?.user.currentSemester && " PERÍODO"}
+            {/* {data?.period}
               {data?.period?.toLowerCase() !== "período atual" && " PERÍODO"} */}
-            </H5>
-            <Divider /> 
-          </HStack>
-          {data?.disciplines?.map((d, i) => {
-            const disciplineWithPeriod = { discipline: d , period: data.period};
-            return (
-              <SwipedDisciplineCard
-                onPress={() => navigation.navigate("DisciplineDetails", d)}
-                onPressLeft={() => navigation.navigate("DisciplineEdit", disciplineWithPeriod )}
-                onPressRight={onPressRight}
-                onSwipeableWillOpen={swipeOpen}
-                item_key={i}
-                rowRefs={rowRefs}
-                key={`${d?.cod}_${i}`}
-                data={d}
-              />
-            );
-          })}
-        </VStack>
+          </H5>
+          <Divider />
+        </HStack>
+        {data?.disciplines?.map((d, i) => {
+          const disciplineWithPeriod = { discipline: d, period: data.period };
+          return (
+            <SwipedDisciplineCard
+              onPress={() => navigation.navigate("DisciplineDetails", d)}
+              onPressLeft={() => navigation.navigate("DisciplineEdit", disciplineWithPeriod)}
+              onPressRight={() => {
+                console.log("right: " + d.courseHistoryId);
+                deleteCourseHistory(d.courseHistoryId);}}
+              onSwipeableWillOpen={swipeOpen}
+              item_key={i}
+              rowRefs={rowRefs}
+              key={`${d?.cod}_${i}`}
+              data={d}
+            />
+          );
+        })}
+      </VStack>
     </Container>
   );
 }
