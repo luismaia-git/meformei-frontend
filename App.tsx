@@ -1,9 +1,10 @@
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { CustomizedThemeProvider } from "./src/hooks/useTheme";
-import { PageManager } from "./src/pages";
 import { NativeBaseProvider, extendTheme } from "native-base";
-import themes from "./src/styles/themes";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { CourseHistoryContextProvider } from "./src/hooks/useCourseHistory";
+import { CustomizedThemeProvider } from "./src/hooks/useTheme";
 import { UserContextProvider } from "./src/hooks/useUser";
+import { PageManager } from "./src/pages";
+import themes from "./src/styles/themes";
 
 export default function App() {
   const customTheme = extendTheme({
@@ -15,13 +16,15 @@ export default function App() {
 
   return (
     <UserContextProvider>
-      <CustomizedThemeProvider>
-        <NativeBaseProvider theme={customTheme}>
-          <GestureHandlerRootView style={{ flex: 1 }}>
-            <PageManager />
-          </GestureHandlerRootView>
-        </NativeBaseProvider>
-      </CustomizedThemeProvider>
+      <CourseHistoryContextProvider>
+        <CustomizedThemeProvider>
+          <NativeBaseProvider theme={customTheme}>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <PageManager />
+            </GestureHandlerRootView>
+          </NativeBaseProvider>
+        </CustomizedThemeProvider>
+      </CourseHistoryContextProvider>
     </UserContextProvider>
   );
 }

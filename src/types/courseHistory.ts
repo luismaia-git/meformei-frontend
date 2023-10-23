@@ -27,7 +27,7 @@ declare module "CourseHistory" {
     }
     
     interface CourseHistory {
-        disciplineHistory: CourseHistoryByPeriod[];
+        disciplineHistory?: CourseHistoryByPeriod[];
     }
 
     interface CourseHistoryResponse {

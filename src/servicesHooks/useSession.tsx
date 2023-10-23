@@ -9,7 +9,7 @@ export function useSession() {
   function isTokenValid(token: string) {
     setLoading(true);
     auth
-      .session(token)
+      .session()
       .then((res) => {
         setSession(res);
       })

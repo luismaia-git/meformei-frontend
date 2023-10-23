@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { User } from "User";
 import {
   ReactNode,
@@ -7,8 +8,8 @@ import {
   useMemo,
   useState,
 } from "react";
+import api from "../service/config/api";
 import { userSave } from "../utils/storange";
-import { useSession } from "../servicesHooks/useSession";
 
 export interface IUserContext {
   user?: User;
@@ -24,42 +25,15 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User>();
   const [loading, setLoading] = useState(false);
 
-  // const newUser: User = {
-  //   user: {
-  //     id: "1",
-  //     name: "John Doe",
-  //     email: "john@example.com",
-  //     registration: "123456",
-  //     curriculumId: "789",
-  //     course: {
-  //       id: "101",
-  //       name: "Computer Science",
-  //     },
-  //     currentSemester: 2,
-  //     enrollmentSemester: 1,
-  //     enrollmentYear: 2023,
-  //     lastname: "Doe",
-  //     studentId: "ST12345",
-  //     university: {
-  //       id: "201",
-  //       name: "University of Example",
-  //       abv: "UE",
-  //       city: "Exampleville",
-  //       state: "EX",
-  //     },
-  //     username: "johndoe",
-  //     city: "Exampleville",
-  //     state: "EX",
-  //   },
-  //   token: "yourAuthToken",
-  //   isAdmin: false,
-  // };
 
   useEffect(() => {
     const res = async () => {
-      await userSave.get().then((user) => {
-        //console.log("user", user);
+      await userSave.get().then(async (user) => {
+
         if (user) setUser(user);
+
+        await AsyncStorage.setItem("token", user.token);
+        api.defaults.headers["Authorization"] = `Bearer ${user.token}`;
       });
       // setUser(newUser); //loginPorra
     };
