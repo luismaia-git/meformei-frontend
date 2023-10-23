@@ -22,7 +22,7 @@ export function useAuth() {
       )
       .catch((e) => {
 
-        console.log(e)
+        //console.log(e)
         toHome(error)
       }
         // error.response
@@ -36,18 +36,18 @@ export function useAuth() {
 
   function patchStudent(data: UserPatchRequest, toDetails: (screen: any) => void) {
     setLoading(true);
-    console.log(data);
+    //console.log(data);
     auth
     students.
       patchStudent(user!.user.studentId, data)
       .then((res) => {
-        console.log("res:", res)
+        //console.log("res:", res)
         handleUser({...user!, user: { ...user!.user, ...res}});
         toDetails(true);
       })
       .catch((e) => {
         toDetails(false)
-        console.log(e)
+        //console.log(e)
       })
   }
 

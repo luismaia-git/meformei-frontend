@@ -1,7 +1,7 @@
+import { CourseHistory, CourseHistoryByPeriod } from "CourseHistory";
 import { useEffect, useMemo, useState } from "react";
 import { useUser } from "../hooks/useUser";
-import { GetCourseHistoryParams, students } from "../service/students";
-import { CourseHistory, CourseHistoryByPeriod } from "CourseHistory";
+import { students } from "../service/students";
 
 export function useCourseHistory() {
   const [courseHistory, setCourseHistory] = useState<CourseHistory>();
@@ -33,18 +33,41 @@ export function useCourseHistory() {
       .finally(() => setLoading(false));
   }
 
-  function deleteCourseHistory(courseHistoryId: string) {
-    setLoading(true);
-    console.log("entrou: " + courseHistoryId)
+  function teste(courseHistoryId: string, updateScreen : (courseHistoryIdDeleted: string) => void) {
+    console.log("entrou: " + courseHistory)
+    setLoading(true)
+    console.log("cont: " + courseHistory?.disciplineHistory[0].disciplines.length)
     students
       .deleteCourseHistory({
         studentRegistration: user!.user?.studentId,
         courseHistoryId: courseHistoryId
       })
       .then((res) => {
-        console.log("res:", res);
-        setCourseHistory(res);
-        filteredList.filter((d) => d.disciplines.filter((dc) => dc.courseHistoryId !== courseHistoryId));
+        console.log("res aa:", res);
+        updateScreen(courseHistoryId);
+      })
+      .catch((error) => {
+        error.response
+          ? setError(error.response.data.message)
+          : setError(error.message)
+        updateScreen(courseHistoryId);
+      })
+      .finally(() => setLoading(false),);
+  }
+
+  function deleteCourseHistory(courseHistoryId: string) {
+    setLoading(true);
+    console.log("entrou: " + courseHistory)
+    students
+      .deleteCourseHistory({
+        studentRegistration: user!.user?.studentId,
+        courseHistoryId: courseHistoryId
+      })
+      .then((res) => {
+        console.log("res aa:", res);
+        // setCourseHistory(res);
+        setFilteredList(filteredList.filter((d) => d.disciplines.filter((dc) => dc.courseHistoryId !== courseHistoryId)));
+        console.log("res:", filteredList.map((d) => d.disciplines.map((dc) => "" +dc.name + "\n")));
       })
       .catch((error) => {
         error.response
@@ -53,8 +76,5 @@ export function useCourseHistory() {
       })
       .finally(() => setLoading(false));
   }
-
-
-
-  return useMemo(() => ({ loading, error, courseHistory, fetchCourseHistory, deleteCourseHistory }), [loading, error, courseHistory, fetchCourseHistory, deleteCourseHistory]);
+  return useMemo(() => ({ loading, error, courseHistory, fetchCourseHistory, deleteCourseHistory, filteredList, teste }), [loading, error, courseHistory, filteredList]);
 }

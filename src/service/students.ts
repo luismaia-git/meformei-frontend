@@ -3,7 +3,7 @@ import api from "./config/api";
 import { callService } from "./config/service";
 import { ProfileTO, User, UserPatchRequest } from "User";
 import { Student } from "../types/types";
-import { CourseHistory } from "CourseHistory";
+import { CourseHistory, CourseHistoryResponse } from "CourseHistory";
 
 export type StatusType =
   | "DONE"
@@ -29,6 +29,11 @@ export type deleteCourseHistoryParams = {
   studentRegistration: string;
   courseHistoryId: string;
 };
+
+export type deleteCourseHistoryResponse = {
+  courseHistoryResponse: CourseHistoryResponse;
+  message: string;
+}
 
 
 const service = () => {
@@ -66,11 +71,11 @@ const service = () => {
     studentRegistration,
   }: GetCourseHistoryParams) {
     const path = `${resource}/${studentRegistration}/courseHistory`;
-    console.log("path:", path);
+    //console.log("path:", path);
     const response = await callService(() =>
       api.get<CourseHistory>(path)
     );
-    console.log("response.data:", response.data);
+    //console.log("response.data:", response.data);
     return response.data;
   }
 
@@ -78,12 +83,13 @@ const service = () => {
     studentRegistration,
     courseHistoryId,
   }: deleteCourseHistoryParams) {
+    console.log("deleteCourseHistory");
     const path = `${resource}/${studentRegistration}/courseHistory/${courseHistoryId}`;
-    console.log("path:", path);
+    //console.log("path:", path);
     const response = await callService(() =>
-      api.delete<any>(path)
+      api.delete<deleteCourseHistoryResponse>(path)
     );
-    console.log("response.data:", response.data);
+    //console.log("response.data:", response.data);
     return response.data;
   }
 

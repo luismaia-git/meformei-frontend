@@ -58,7 +58,7 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const res = async () => {
       await userSave.get().then((user) => {
-        console.log("user", user);
+        //console.log("user", user);
         if (user) setUser(user);
       });
       // setUser(newUser); //loginPorra

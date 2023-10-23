@@ -54,7 +54,7 @@ export function SwipedDisciplineCard({
           {EditButton(progress, dragX)}
         </TouchableHighlight>
       )}
-      renderRightActions={DeleteButton}
+      renderRightActions={(progress, dragX) => (DeleteButton(progress, dragX, onPressRight))}
       onSwipeableWillOpen={() => onSwipeableWillOpen(item_key)}
     >
       <TouchableHighlight

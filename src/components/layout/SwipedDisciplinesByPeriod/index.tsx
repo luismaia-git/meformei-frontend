@@ -18,7 +18,7 @@ export function SwipedDisciplinesByPeriod({
   const { user } = useUser()
   const theme = useTheme();
   const navigation = useNavigation<DisciplineProp>();
-  const { deleteCourseHistory, courseHistory } = useCourseHistory();
+  const { deleteCourseHistory, courseHistory, filteredList, teste} = useCourseHistory();
 
   let rowRefs = new Map();
 
@@ -28,9 +28,16 @@ export function SwipedDisciplinesByPeriod({
     });
   };
 
+  const updateScreen = (courseHistoryIdDeleted: string) => {
+    // vou atualizar o courseHistory por aqui usando o useEffect
+  };
+
   const onPressRight = (d: DisciplineData) => {
     console.log("right: " + d.courseHistoryId)
-    deleteCourseHistory(d.courseHistoryId);
+    // deleteCourseHistory(d.courseHistoryId);
+    var courseHistoryId = d.courseHistoryId;
+    teste(d.courseHistoryId, updateScreen);
+    console.log("final: " + filteredList);
   };
 
   return (
@@ -51,9 +58,7 @@ export function SwipedDisciplinesByPeriod({
             <SwipedDisciplineCard
               onPress={() => navigation.navigate("DisciplineDetails", d)}
               onPressLeft={() => navigation.navigate("DisciplineEdit", disciplineWithPeriod)}
-              onPressRight={() => {
-                console.log("right: " + d.courseHistoryId);
-                deleteCourseHistory(d.courseHistoryId);}}
+              onPressRight={() => onPressRight(d)}
               onSwipeableWillOpen={swipeOpen}
               item_key={i}
               rowRefs={rowRefs}

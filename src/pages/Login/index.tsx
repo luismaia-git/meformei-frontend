@@ -113,6 +113,7 @@ export default function Login() {
                       onChangeText: handleChange("username"),
                       onBlur: handleBlur("username"),
                       value: values.username,
+                      defaultValue: "student"
                     }}
                   />
                 </FormControl>
@@ -135,6 +136,7 @@ export default function Login() {
                       onChangeText: handleChange("password"),
                       onBlur: handleBlur("password"),
                       value: values.password,
+                      defaultValue: "123"
                     }}
                   />
                 </FormControl>

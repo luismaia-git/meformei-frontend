@@ -3,10 +3,12 @@ import { H5 } from "../../shared/text";
 import { Container, IconStyle } from "./styles";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Animated } from "react-native";
+import { RectButton } from "react-native-gesture-handler";
 
 export function DeleteButton(
   progress: Animated.AnimatedInterpolation<string | number>,
-  dragX: Animated.AnimatedInterpolation<string | number>
+  dragX: Animated.AnimatedInterpolation<string | number>,
+  onPress: () => void
 ) {
   const scale = dragX.interpolate({
     inputRange: [0, 100],
@@ -15,7 +17,9 @@ export function DeleteButton(
   });
 
   return (
-    <Container>
+    <Container 
+      onPress={onPress}
+    >
       <IconStyle style={{ transform: [{ scale }] }}>
         <Icon
           as={MaterialIcons}
@@ -24,7 +28,7 @@ export function DeleteButton(
           color="#ffffff"
         />
         <H5 color="#ffffff" size={10}>
-          Exluir
+          Exclui
         </H5>
       </IconStyle>
     </Container>

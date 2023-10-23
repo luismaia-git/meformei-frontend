@@ -27,10 +27,11 @@ export function FormationPlan() {
   const navigation = useNavigation<DisciplineProp>();
   const [status, setStatus] = useState<string>("ANY")
   const [termo, setTermo] = useState("");
-  const { loading, courseHistory,  } = useCourseHistory();
-  const [filteredList, setFilteredList] = useState<CourseHistoryByPeriod[]>([]); 
+  const { loading, courseHistory, } = useCourseHistory();
+  const [filteredList, setFilteredList] = useState<CourseHistoryByPeriod[]>([]);
 
   useEffect(() => {
+    if (!courseHistory?.disciplineHistory != undefined) console.log("useEffect FormationPlan ANTES: " + courseHistory?.disciplineHistory[0].disciplines.length);
     setFilteredList(
       courseHistory?.disciplineHistory.map((d) => {
         return {
@@ -45,8 +46,16 @@ export function FormationPlan() {
         };
       })
         .filter((d) => d.disciplines.length > 0) ?? []);
-
+    if (filteredList[0] != undefined) {
+      console.log("useEffect FormationPlan DEPOIS: " + filteredList[0].disciplines.length)
+    }
   }, [courseHistory, termo, status]);
+
+  useEffect(() => {
+    if( filteredList[0] !=  undefined) {
+      console.log("outro useEffect FormationPlan DEPOIS: " + filteredList[0].disciplines.length)
+    } 
+   }, [filteredList]);
 
   const HeaderElement = () => {
     return (

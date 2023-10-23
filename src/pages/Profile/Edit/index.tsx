@@ -39,7 +39,7 @@ export function ProfileEdit() {
 
     await patchStudent(student, toDetails);
   };
-  console.log("user:", user);
+  //console.log("user:", user);
   return (
     <Container
       contentContainerStyle={{ flexGrow: 1 }}

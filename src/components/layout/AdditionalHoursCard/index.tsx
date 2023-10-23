@@ -39,7 +39,7 @@ export function AdditionalHoursCard({
         }
       }}
       renderLeftActions={EditButton}
-      renderRightActions={DeleteButton}
+      renderRightActions={(progress, dragX) => DeleteButton(progress, dragX, handleRight)}
       onSwipeableWillOpen={onSwipeableWillOpen}
     >
       <TouchableHighlight
