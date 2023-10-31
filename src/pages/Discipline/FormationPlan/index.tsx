@@ -1,7 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
+import { Text } from "react-native";
 import { CourseHistoryByPeriod } from "CourseHistory";
-import { HStack, VStack, View } from "native-base";
+import { Button, HStack, VStack, View } from "native-base";
 import { useEffect, useState } from "react";
+import { Container } from "./style";
 import {
   CreateButton,
   FilterSelect,
@@ -24,12 +26,13 @@ export function FormationPlan() {
   const navigation = useNavigation<DisciplineProp>();
   const [status, setStatus] = useState<string>("ANY")
   const [termo, setTermo] = useState("");
-
+  const [loadingFormationPlan, setLoadingFormationPlan] = useState(false);
   const [filteredList, setFilteredList] = useState<CourseHistoryByPeriod[]>([]);
 
-  const { loading, courseHistory } = useCourseHistory();
+  const { loading, courseHistory, teste } = useCourseHistory();
 
   useEffect(() => {
+    console.log("formationPlan useEffect")
     setFilteredList(
       courseHistory?.disciplineHistory?.map((d) => {
         return {
@@ -45,6 +48,12 @@ export function FormationPlan() {
       })
         .filter((d) => d.disciplines.length > 0) ?? []);
   }, [courseHistory, termo, status]);
+
+  const hehe = () => {
+    setLoadingFormationPlan(true)
+    teste()
+    setLoadingFormationPlan(false)
+  }
 
   const HeaderElement = () => {
     return (
@@ -106,13 +115,13 @@ export function FormationPlan() {
 
   return (
     <ScrollContainer>
-      {loading ? (
-        <Loading opacity={false} />
-      ) : (
-        <>
-          <CustomizedStatusBar backgroundColor={theme.colors.background} />
-          <Content>
-            <HeaderElement />
+      <CustomizedStatusBar backgroundColor={theme.colors.background} />
+      <Content>
+        <HeaderElement />
+        {loading ? (
+          <Loading opacity={false} />
+        ) : (
+          <>
             {/* Integração: so mudar o data para filteredList */}
             {filteredList?.length > 0 ?
               (<VStack space={2}>
@@ -123,9 +132,9 @@ export function FormationPlan() {
                   <H5>Nenhum resultado foi encontrado</H5>
                 </View>
               )}
-          </Content>
-        </>)
-      }
+          </>)
+        }
+      </Content>
     </ScrollContainer>
   );
 }

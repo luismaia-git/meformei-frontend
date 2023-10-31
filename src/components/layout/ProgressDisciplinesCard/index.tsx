@@ -35,9 +35,9 @@ export function ProgressDisciplinesCard({
             Situação:
             <H5
               color={
-                data.status === "Aprovado"
+                data.status === "Aprovada"
                   ? colors.green[500]
-                  : data.status === "Trancado"
+                  : data.status === "Trancada"
                   ? colors.trueGray[400]
                   : colors.red[500]
               }

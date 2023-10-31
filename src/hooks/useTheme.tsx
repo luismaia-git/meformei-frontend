@@ -8,7 +8,7 @@ import {
 } from "react";
 import { useColorScheme } from "react-native";
 import themes, { ITheme } from "../styles/themes";
-import { colorModeManager } from "../utils/storange";
+import { colorModeManager } from "../utils/storage";
 
 export interface ICustomizedTheme {
   theme: ITheme;

@@ -12,3 +12,12 @@ export const Container = styled.View<{ isOpacity?: boolean }>`
   justify-content: center;
   align-items: center;
 `;
+
+export const Container2 = styled.View<{ isOpacity?: boolean }>`
+  flex: 1;
+  felx-direction: row;
+  background: ${(props) =>
+    props.isOpacity ? "rgba(0, 19, 32, 0.5)" : props.theme.colors.background};
+  justify-content: center;
+  justify-content: center;
+`;

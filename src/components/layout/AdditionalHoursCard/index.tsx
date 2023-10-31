@@ -30,6 +30,12 @@ export function AdditionalHoursCard({
 }: AdditionalHoursCardProps) {
   const theme = useTheme();
 
+  const swipeBack = (index: number) => {
+    [...rowRefs.entries()].forEach(([key, ref]) => {
+      if (key === index && ref) ref.close();
+    });
+  };
+
   return (
     <Swipeable
       key={item_key}
@@ -39,7 +45,7 @@ export function AdditionalHoursCard({
         }
       }}
       renderLeftActions={EditButton}
-      renderRightActions={(progress, dragX) => DeleteButton(progress, dragX, handleRight)}
+      renderRightActions={(progress, dragX) => DeleteButton(progress, dragX, handleRight, swipeBack, item_key)}
       onSwipeableWillOpen={onSwipeableWillOpen}
     >
       <TouchableHighlight

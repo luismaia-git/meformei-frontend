@@ -1,5 +1,5 @@
 declare module "Discipline" {
-  type Status = "Aprovado" | "Reprovado" | "Trancado";
+  type Status = "Aprovada" | "Reprovada" | "Trancada";
 
   export type StatusType = 'DONE' | 'INPROGRESS' | 'FAILED' | 'WITHDRAWAL';
 
@@ -22,7 +22,6 @@ declare module "Discipline" {
       bibliography: string[];
       status: StatusType; 
   }
-
 
   // interface DisciplineData {
   //   id: string;
@@ -49,6 +48,7 @@ declare module "Discipline" {
     period: number;
     discipline: DisciplineData;
   }
+
 
   // interface DisciplineByPeriod {
   //   disciplines: Discipline[];

@@ -3,7 +3,7 @@ import api from "./config/api";
 import { callService } from "./config/service";
 import { ProfileTO, User, UserPatchRequest } from "User";
 import { Student } from "../types/types";
-import { CourseHistory, CourseHistoryResponse } from "CourseHistory";
+import { CourseHistory, CourseHistoryByPeriod, CourseHistoryResponse } from "CourseHistory";
 
 export type StatusType =
   | "DONE"
@@ -32,6 +32,44 @@ export type deleteCourseHistoryParams = {
 
 export type deleteCourseHistoryResponse = {
   courseHistoryResponse: CourseHistoryResponse;
+  message: string;
+}
+
+export type patchCourseHistoryParams = {
+  studentRegistration: string;
+  courseHistoryId: string;
+  data: courseHistoryRequest;
+}
+
+export type patchCourseHistoryResponse = {
+  disciplineHistory: CourseHistoryResponse;
+  message: string;
+}
+
+
+export type courseHistoryRequest = {
+  disciplineId?: string
+  status?: string
+  semester?: number
+  startTime?: string
+  endTime?: string
+  hours?: number
+  daysWeek?: string[]
+}
+
+export type CourseHistoryParams = {
+  studentRegistration: string;
+  courseHistoryId: string;
+};
+
+export type postCourseHistoryParams = {
+  studentRegistration: string;
+  semester: string;
+  data: courseHistoryRequest;
+}
+
+export type postCourseHistoryResponse = {
+  disciplineHistory: CourseHistoryByPeriod[];
   message: string;
 }
 
@@ -93,11 +131,33 @@ const service = () => {
     return response.data;
   }
 
+async function patchCourseHistory({ courseHistoryId, studentRegistration, data }: patchCourseHistoryParams) {
+    const path = `${resource}/${studentRegistration}/courseHistory/${courseHistoryId}`;
+    console.log("path: ", path)
+    console.log("data: ", data)
+    const response = await callService(() =>
+      api.patch<patchCourseHistoryResponse>(path, data)
+    );
+    console.log("response.data:", response.data.disciplineHistory)
+    return response.data;
+}
+
+async function postCourseHistory({studentRegistration, semester,  data }: postCourseHistoryParams) {
+  const path = `${resource}/${studentRegistration}/courseHistory/${semester}`;
+  const response = await callService(() =>
+    api.patch<postCourseHistoryResponse>(path, data)
+  );
+  console.log("response.data:", response.data.disciplineHistory)
+  return response.data;
+}
+
   return {
     getDisciplinesPeriodByStatus,
     getCourseHistory,
     patchStudent,
     deleteCourseHistory,
+    patchCourseHistory,
+    postCourseHistory
   };
 };
 

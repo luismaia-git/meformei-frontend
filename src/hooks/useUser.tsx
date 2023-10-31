@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 import api from "../service/config/api";
-import { userSave } from "../utils/storange";
+import { userSave } from "../utils/storage";
 
 export interface IUserContext {
   user?: User;
@@ -28,14 +28,13 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const res = async () => {
-      await userSave.get().then(async (user) => {
-
-        if (user) setUser(user);
-
-        await AsyncStorage.setItem("token", user.token);
-        api.defaults.headers["Authorization"] = `Bearer ${user.token}`;
-      });
-      // setUser(newUser); //loginPorra
+      const user = await userSave.get()
+      
+        if (user) {
+          setUser(user);
+          await AsyncStorage.setItem("token", user.token);
+          api.defaults.headers["Authorization"] = `Bearer ${user.token}`;
+        }
     };
 
     res();

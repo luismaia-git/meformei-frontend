@@ -3,7 +3,7 @@ import api from "./config/api";
 import { callService } from "./config/service";
 import { ProfileTO, User, UserPatchRequest } from "User";
 import { Student } from "../types/types";
-import { CourseHistory } from "CourseHistory";
+import { CourseHistory, disciplineResponse } from "CourseHistory";
 
 export type StatusType =
     | "DONE"
@@ -26,6 +26,14 @@ export type GetDisciplineParams = {
     disciplineId: string;
 };
 
+export type GetDisciplinesParams = {
+    curriculumId: string;
+};
+
+export type GetDisciplinesResponse = {
+    disciplines: disciplineResponse[];
+}
+
 
 const service = () => {
     const resource = "curriculums";
@@ -41,8 +49,19 @@ const service = () => {
         return response.data;
     }
 
+    async function getDisciplines({
+        curriculumId,
+    }: GetDisciplinesParams) {
+        const path = `${resource}/${curriculumId}/curriculumId/disciplines`;
+        const response = await callService(() =>
+            api.get<GetDisciplinesResponse>(path)
+        );
+        return response.data;
+    }
+
     return {
         getDiscipline,
+        getDisciplines
     };
 };
 

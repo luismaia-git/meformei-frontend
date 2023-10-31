@@ -30,10 +30,24 @@ declare module "CourseHistory" {
         disciplineHistory?: CourseHistoryByPeriod[];
     }
 
+    interface disciplineResponse {
+        id: string;
+        name: string;
+        cod: string;
+        menu: string;
+        curriculumId: string;
+        description: string;
+        isOptional: boolean;
+        semester: number;
+        bibliography: string[];
+        prerequisites: string[];
+        workload: number;
+    }
+
     interface CourseHistoryResponse {
         createdAt: string;
         daysWeek: string[];
-        discipline: Discipline;
+        discipline: disciplineResponse;
         endTime: string;
         hours: number;
         id: string;
@@ -43,4 +57,17 @@ declare module "CourseHistory" {
         studentId: string;
       }
 
+      interface courseHistoryBodyRequest {
+        disciplineId?: string,
+        status?: string,
+        semester?: number,
+        startTime?: string,
+        endTime?: string,
+        hours?: number,
+        daysWeek?: string[]
+      }
+
+      interface CourseHistoryRegisterBodyRequest {
+        disciplines?: courseHistoryBodyRequest[],
+      }
 }
