@@ -26,18 +26,6 @@ const service = () => {
     return response.data;
   }
 
-  type ResponseDisciplines = {
-    disciplines: DisciplineByPeriod[];
-  };
-
-  async function getDisciplines(idCourse?: string) {
-    const path = `curriculums/${idCourse}/disciplines-to-student`;
-    const response = await callService(() =>
-      api.get<ResponseDisciplines>(path)
-    );
-    return response.data.disciplines; //response.data.disciplines;
-  }
-
   async function getDisciplinesByCod(
     idUniversity?: string,
     idCourse?: string,
@@ -62,7 +50,6 @@ const service = () => {
     postStudent,
     getUniversities,
     getCourses,
-    getDisciplines,
     getDisciplinesByCod,
   };
 };

@@ -6,13 +6,14 @@ import {
   InputSelectedItem,
   DisciplineTitle,
 } from "./styles";
-import { TouchableOpacity, Modal, FlatList, Text } from "react-native";
+import { TouchableOpacity, Modal, FlatList } from "react-native";
 import { useEffect, useState } from "react";
 import { FormControl, HStack, Icon, VStack, useTheme as useNativeTheme } from "native-base";
 import { useTheme } from "../../../hooks/useTheme";
 import { Entypo, AntDesign } from "@expo/vector-icons";
 import { CustomizedStatusBar } from "../CustomizedStatusBar";
 import { SearchInput } from "../SearchInput";
+import { curriculums } from "../../../service/curriculums";
 const { Label } = FormControl;
 
 interface Discipline {
@@ -21,11 +22,22 @@ interface Discipline {
   id: number;
 }
 
+interface courseHistoryBodyRequest {
+  disciplineId: string,
+  name: string,
+  cod: string,
+  status: string,
+  startTime: string,
+  endTime: string,
+  hours: number,
+  daysWeek: string[]
+}
+
 interface SelectMultipleProps {
   label?: String,
-  data: Discipline[];
-  onChange: () => void;
-  defaultValue?: Discipline[];
+  data: courseHistoryBodyRequest[];
+  onChange: (selected: courseHistoryBodyRequest[]) => void;
+  defaultValue?: courseHistoryBodyRequest[];
   placeholder?: string;
   max?: number;
 }
@@ -42,28 +54,37 @@ export function SelectMultiple({
   const { theme } = useTheme();
 
   const [visible, setVisible] = useState(false);
-  const [options, setOptions] = useState<Discipline[]>([]);
-  const [list, setList] = useState<Discipline[]>([]);
-  const [selected, setSelected] = useState<Discipline[]>([]);
+  // const [options, setOptions] = useState<Discipline[]>([]);
+  // const [list, setList] = useState<Discipline[]>([]);
+  const [options, setOptions] = useState<courseHistoryBodyRequest[]>([]);
+  const [list, setList] = useState<courseHistoryBodyRequest[]>([]);
+  // const [selected, setSelected] = useState<Discipline[]>([]);
+  const [selected, setSelected] = useState<courseHistoryBodyRequest[]>([]);
 
-  const [temporarySelected, setTemporarySelected] = useState<Discipline[]>([]);
+  // const [temporarySelected, setTemporarySelected] = useState<Discipline[]>([]);
+  const [temporarySelected, setTemporarySelected] = useState<courseHistoryBodyRequest[]>([]);
 
   const [isFull, setIsFull] = useState(false);
 
   const [termo, setTermo] = useState("");
 
   useEffect(() => {
+    console.log("SelectMultiple useEffect when data change")
     if (defaultValue.length > 0) setSelected(defaultValue);
+    console.log("selected: ", selected)
     setOptions(data);
+    console.log("options: ", options)
     setList(data);
+    console.log("list: ", list)
   }, [data]);
 
   useEffect(() => {
     if (max) setIsFull(temporarySelected.length >= max);
+    onChange(temporarySelected);
   }, [temporarySelected]);
 
-  const toggleSelection = (item: Discipline) => {
-    const index = temporarySelected.findIndex((i) => i.id === item.id);
+  const toggleSelection = (item: courseHistoryBodyRequest) => {
+    const index = temporarySelected.findIndex((i) => i.disciplineId === item.disciplineId);
     const arrSelected = [...temporarySelected];
     if (index !== -1) {
       arrSelected.splice(index, 1);
@@ -75,9 +96,9 @@ export function SelectMultiple({
     setTemporarySelected(arrSelected);
   };
 
-  function renderItem(item: Discipline, index: number) {
+  function renderItem(item: courseHistoryBodyRequest, index: number) {
     const selectedItem =
-      temporarySelected.findIndex((i) => i.id === item.id) !== -1;
+      temporarySelected.findIndex((i) => i.disciplineId === item.disciplineId) !== -1;
     return (
       <TouchableOpacity
         key={index}
@@ -122,7 +143,7 @@ export function SelectMultiple({
       ? options.filter(
         (d) =>
           d.name.toLowerCase().includes(termo.toLowerCase()) ||
-          d.cod.toLowerCase().includes(termo.toLowerCase())
+          d.disciplineId.toLowerCase().includes(termo.toLowerCase())
       )
       : [];
 

@@ -23,22 +23,6 @@ declare module "Discipline" {
       status: StatusType; 
   }
 
-  // interface DisciplineData {
-  //   id: string;
-  //   name: string;
-  //   cod: string;
-  //   menu: string;
-  //   curriculumId: string;
-  //   description: string;
-  //   isOptional: boolean;
-  //   prerequisites: string[];
-  //   workload: number;
-  //   start?: number,
-  //   end?: number,
-  //   daysWeek?: string[]
-  //   bibliography: string[];
-  // }
-
   interface DisciplineByPeriod {
     period: number;
     disciplines: DisciplineData[];
@@ -48,11 +32,6 @@ declare module "Discipline" {
     period: number;
     discipline: DisciplineData;
   }
-
-
-  // interface DisciplineByPeriod {
-  //   disciplines: Discipline[];
-  // }
 
   interface Hour {
     start: number;

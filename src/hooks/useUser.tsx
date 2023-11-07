@@ -29,7 +29,7 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const res = async () => {
       const user = await userSave.get()
-      
+        console.log(user.token)
         if (user) {
           setUser(user);
           await AsyncStorage.setItem("token", user.token);

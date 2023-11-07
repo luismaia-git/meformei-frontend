@@ -3,7 +3,7 @@ import api from "./config/api";
 import { callService } from "./config/service";
 import { ProfileTO, User, UserPatchRequest } from "User";
 import { Student } from "../types/types";
-import { CourseHistory, CourseHistoryByPeriod, CourseHistoryResponse } from "CourseHistory";
+import { CourseHistory, CourseHistoryByPeriod, CourseHistoryRegisterBodyRequest, CourseHistoryResponse } from "CourseHistory";
 
 export type StatusType =
   | "DONE"
@@ -64,8 +64,8 @@ export type CourseHistoryParams = {
 
 export type postCourseHistoryParams = {
   studentRegistration: string;
-  semester: string;
-  data: courseHistoryRequest;
+  semester: number;
+  data: CourseHistoryRegisterBodyRequest;
 }
 
 export type postCourseHistoryResponse = {
@@ -143,11 +143,11 @@ async function patchCourseHistory({ courseHistoryId, studentRegistration, data }
 }
 
 async function postCourseHistory({studentRegistration, semester,  data }: postCourseHistoryParams) {
-  const path = `${resource}/${studentRegistration}/courseHistory/${semester}`;
+  const path = `${resource}/${studentRegistration}/courseHistory/semester/${semester}`;
+  console.log("path: ", path)
   const response = await callService(() =>
-    api.patch<postCourseHistoryResponse>(path, data)
+    api.post<postCourseHistoryResponse>(path, data)
   );
-  console.log("response.data:", response.data.disciplineHistory)
   return response.data;
 }
 

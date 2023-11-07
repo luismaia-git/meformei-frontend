@@ -7,22 +7,24 @@ import {
   useState,
 } from "react";
 
-import { CourseHistory, CourseHistoryByPeriod, CourseHistoryRegisterBodyRequest, CourseHistoryResponse, Discipline, courseHistoryBodyRequest, disciplineResponse } from "CourseHistory";
+import { CourseHistory, CourseHistoryByPeriod, CourseHistoryRegisterBodyRequest, CourseHistoryResponse, Discipline, GetDisciplinesResponse, courseHistoryBodyRequest, disciplineResponse } from "CourseHistory";
 
 import { patchCourseHistoryResponse, students } from "../service/students";
 import { useUser } from "./useUser";
 import { curriculums } from "../service/curriculums";
+import { parseCourseHistoryToRegisterBody, parseDisciplinesResponseToCourseHistoryRegisterBodyRequest } from "../utils/parsers";
 
 export interface ICourseHistoryContext {
   loading: boolean,
   error: string[];
   courseHistory?: CourseHistory,
+  curriculumDisciplines?: CourseHistoryRegisterBodyRequest,
   fetchCourseHistory: () => void,
   deleteCourseHistory: (courseHistoryId: string) => Promise<void>,
   patchCourseHistory: (courseHistoryId: string, data: any, toFormationPlanList: (goBack: boolean) => void) => Promise<void>,
-  postCourseHistory: (semester: string, data: CourseHistoryRegisterBodyRequest, toFormationPlanList: (goBack: boolean) => void) => Promise<void>,
-  getDisciplines: (curriculumId: string) => Promise<disciplineResponse[]>,
-  teste: () => void,
+  postCourseHistory: (semester: number, data: CourseHistoryRegisterBodyRequest, toFormationPlanList: (goBack: boolean) => void) => Promise<void>,
+  getDisciplines: () => Promise<disciplineResponse[]>,
+  getDisciplinesfromCurriculum: () => Promise<disciplineResponse[]>,
 }
 
 const CourseHistoryContext = createContext<ICourseHistoryContext>({} as ICourseHistoryContext);
@@ -34,6 +36,7 @@ export function useCourseHistory() {
 export function CourseHistoryContextProvider({ children }: { children: ReactNode }) {
   const [courseHistory, setCourseHistory] = useState<CourseHistory>();
   const [filteredList, setFilteredList] = useState<CourseHistoryByPeriod[]>([]);
+  const [curriculumDisciplines, setCurriculumDisciplines] = useState<CourseHistoryRegisterBodyRequest>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string[]>([]);
 
@@ -42,23 +45,20 @@ export function CourseHistoryContextProvider({ children }: { children: ReactNode
   useEffect(() => {
     if (user) {
       setLoading(true);
-      console.log("useCourseHistory, userEffect")
+      console.log("--------------------------------- useCourseHistory, userEffect")
       students
         .getCourseHistory({
           studentRegistration: user!.user?.studentId
         })
-        .then((res) => { res.disciplineHistory?.sort((a, b) => a.period - b.period); setCourseHistory(res) })
+        .then((res) => {
+          res.disciplineHistory?.sort((a, b) => a.period - b.period); setCourseHistory(res)
+          getDisciplinesfromCurriculum().catch((err) => setError(err))
+        })
         .catch((err) => setError(err))
         .finally(() => setLoading(false));
     }
+
   }, [user]);
-
-  function teste() {
-
-    setLoading(true);
-    setTimeout(() => { console.log("hehe") }, 5000)
-    setLoading(false);
-  }
 
   function fetchCourseHistory() {
 
@@ -123,7 +123,7 @@ export function CourseHistoryContextProvider({ children }: { children: ReactNode
         data: data
       })
       const updatedCourseHistory = { ...courseHistory }
-      const updatedDiscipline : Discipline  = parseResponseToCourseHistory(response)
+      const updatedDiscipline: Discipline = parseResponseToCourseHistory(response)
       const courseHistoryFinal = updateCourseHistory(updatedCourseHistory, response, updatedDiscipline, courseHistoryId);
 
       setCourseHistory(courseHistoryFinal)
@@ -138,21 +138,31 @@ export function CourseHistoryContextProvider({ children }: { children: ReactNode
     }
   }
 
-  async function postCourseHistory(semester: string, data: any, toFormationPlanList: (goBack: boolean) => void) {
+  async function postCourseHistory(semester: number, data: any, toFormationPlanList: (goBack: boolean) => void) {
     setLoading(true);
+    toFormationPlanList(false);
     try {
+      console.log("data: ", data)
       const response = await students.postCourseHistory({
         studentRegistration: user!.user?.studentId,
         semester: semester,
         data: data
       })
-      const updatedCourseHistory = { ...courseHistory }
-      console.log("response: ", response)
-      console.log("response 2 : ", response.disciplineHistory)
-      console.log("ANTEEEEES: ")
-      updatedCourseHistory.disciplineHistory?.map((d) => { console.log("period: ", d.period); d.disciplines.map((d) => console.log("discipline: ", d.name)) })
-      console.log("ATUALIZADOOOOOOO: ")
-      updatedCourseHistory.disciplineHistory?.map((d) => { console.log("period: ", d.period); d.disciplines.map((d) => console.log("discipline: ", d.name)) })
+      var updatedCourseHistory = { ...courseHistory }
+      
+      if (updatedCourseHistory && updatedCourseHistory.disciplineHistory) {
+        updatedCourseHistory.disciplineHistory = updatedCourseHistory.disciplineHistory.map((d) => {
+          if (d.period == semester) {
+            if (response && response.disciplineHistory && response.disciplineHistory[0]) {
+              d.disciplines.push(...response.disciplineHistory[0].disciplines!);
+            }
+          }
+          return d;
+        });
+      }
+      // updatedCourseHistory = updatedCourseHistory!.disciplineHistory!.map((d) => { if(d.period == semester) d.disciplines.push(...response!.disciplineHistory![0].disciplines!) })}
+      setCourseHistory(updatedCourseHistory)
+      // updatedCourseHistory.disciplineHistory?.map((d) => { console.log("period: ", d.period); d.disciplines.map((d) => console.log("discipline: ", d.name)) })
       toFormationPlanList(true);
     } catch (error: any) {
       error.response
@@ -164,14 +174,42 @@ export function CourseHistoryContextProvider({ children }: { children: ReactNode
     }
   }
 
-  async function getDisciplines(curriculumId: string) {
+  async function getDisciplines() {
     setLoading(true);
     try {
-      const response = await curriculums.getDisciplines({
-        curriculumId: curriculumId
-      })
-      console.log("response: ", response)
-      return response.disciplines
+      if (user?.user.curriculumId) {
+        const response = await curriculums.getDisciplines({
+          curriculumId: user?.user.curriculumId
+        })
+        return response.disciplines
+      } else {
+        throw new Error("Usuário não possui currículo cadastrado")
+      }
+    } catch (error: any) {
+      error.response
+        ? setError(error.response.data.message)
+        : setError(error.message);
+      console.log("error: ", error)
+      return [] as disciplineResponse[]
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function getDisciplinesfromCurriculum() {
+    setLoading(true);
+    try {
+      if (user?.user.curriculumId) {
+        const response = await curriculums.getDisciplines({
+          curriculumId: user?.user.curriculumId
+        })
+
+        const curriculumDisciplines = parseDisciplinesResponseToCourseHistoryRegisterBodyRequest(response)
+        setCurriculumDisciplines(curriculumDisciplines)
+        return response.disciplines
+      } else {
+        throw new Error("Usuário não possui currículo cadastrado")
+      }
     } catch (error: any) {
       error.response
         ? setError(error.response.data.message)
@@ -184,19 +222,19 @@ export function CourseHistoryContextProvider({ children }: { children: ReactNode
   }
 
   /** Funções Auxiliares */
-  function parseResponseToCourseHistory(response : patchCourseHistoryResponse) {
+  function parseResponseToCourseHistory(response: patchCourseHistoryResponse) {
     console.log("duramte");
     console.log("huuuuuummm: ", response.message);
-  
+
     if (!response.disciplineHistory.discipline || response.disciplineHistory.discipline === undefined) {
       console.log("é nulo");
     } else {
       console.log("não é nulo");
     }
-  
+
     console.log("hum: ", response.disciplineHistory);
     console.log(" period: " + response.disciplineHistory.semester);
-  
+
     const updatedDiscipline = {
       id: response.disciplineHistory.discipline.id,
       courseHistoryId: response.disciplineHistory.id,
@@ -214,26 +252,26 @@ export function CourseHistoryContextProvider({ children }: { children: ReactNode
       bibliography: response.disciplineHistory.discipline.bibliography,
       status: response.disciplineHistory.status,
     } as Discipline;
-  
+
     return updatedDiscipline;
   }
 
   function updateCourseHistory(updatedCourseHistory: CourseHistory, response: patchCourseHistoryResponse, updatedDiscipline: Discipline, courseHistoryId: string) {
     if (updatedCourseHistory.disciplineHistory && Array.isArray(updatedCourseHistory.disciplineHistory)) {
       updatedCourseHistory.disciplineHistory?.sort((a, b) => a.period - b.period);
-  
+
       //  remove as disciplinas do período antigo
       // removeOldCourseHistory(updatedCourseHistory, data, courseHistoryId);
-  
+
       console.log("ANTEEES updatedCourseHistory.disciplineHistory: ", updatedCourseHistory.disciplineHistory.map((d) => { if (d.period == response.disciplineHistory.semester) { console.log("period:", d.period); console.log("disciplinas: ", d.disciplines) }; }))
-  
+
       updatedCourseHistory.disciplineHistory[response.disciplineHistory.semester - 1].disciplines = updatedCourseHistory.disciplineHistory[response.disciplineHistory.semester - 1].disciplines.filter(
         (discipline) => discipline.courseHistoryId !== courseHistoryId
       );
-        
+
       const isPeriodChanged = response.disciplineHistory.semester != null
       const isPeriodInArray = updatedCourseHistory.disciplineHistory.some((d) => d.period === response.disciplineHistory.semester);
-  
+
       if (isPeriodChanged && !isPeriodInArray) {
         // In a new period
         updatedCourseHistory.disciplineHistory.push({
@@ -252,7 +290,7 @@ export function CourseHistoryContextProvider({ children }: { children: ReactNode
     }
   }
 
-  const providerValue = useMemo(() => ({ loading, error, courseHistory, fetchCourseHistory, deleteCourseHistory, patchCourseHistory, postCourseHistory, getDisciplines, teste }), [loading, error, courseHistory, filteredList]);
+  const providerValue = useMemo(() => ({ loading, error, curriculumDisciplines, courseHistory, fetchCourseHistory, deleteCourseHistory, patchCourseHistory, postCourseHistory, getDisciplines, getDisciplinesfromCurriculum }), [loading, error, courseHistory, filteredList]);
   return (
     <CourseHistoryContext.Provider value={providerValue}>
       {children}
