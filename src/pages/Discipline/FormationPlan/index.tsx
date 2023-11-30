@@ -29,10 +29,12 @@ export function FormationPlan() {
   const [loadingFormationPlan, setLoadingFormationPlan] = useState(false);
   const [filteredList, setFilteredList] = useState<CourseHistoryByPeriod[]>([]);
 
-  const { loading, courseHistory, teste } = useCourseHistory();
+  const { loading, courseHistory } = useCourseHistory();
 
   useEffect(() => {
     console.log("formationPlan useEffect")
+    console.log("coursehistory: ", courseHistory)
+    console.log("coursehistory: ", courseHistory?.disciplineHistory?.length)
     setFilteredList(
       courseHistory?.disciplineHistory?.map((d) => {
         return {
@@ -47,11 +49,12 @@ export function FormationPlan() {
         };
       })
         .filter((d) => d.disciplines.length > 0) ?? []);
+        console.log("filteredList: ", filteredList)
+        console.log("filteredList: ", filteredList?.length)
   }, [courseHistory, termo, status]);
 
   const hehe = () => {
     setLoadingFormationPlan(true)
-    teste()
     setLoadingFormationPlan(false)
   }
 
@@ -83,12 +86,12 @@ export function FormationPlan() {
               defaultValue: "ANY",
             }}
             values={[
-              { label: "Todas", value: "ANY" },
-              { label: "Em andamento", value: "INPROGRESS" },
               { label: "A Fazer", value: "TODO" },
-              { label: "Concluídas", value: "DONE" },
-              { label: "Trancadas", value: "WITHDRAWAL" },
-              { label: "Reprovadas", value: "FAILED" },
+              { label: "Em andamento", value: "INPROGRESS" },
+              { label: "Concluída", value: "DONE" },
+              { label: "Reprovada", value: "FAILED" },
+              { label: "Trancada", value: "WITHDRAWAL" },
+              { label: "Todas", value: "ANY" },
             ]}
           />
 

@@ -1,6 +1,8 @@
 declare module "CourseHistory" {
   export type StatusType = 'DONE' | 'INPROGRESS' | 'FAILED' | 'WITHDRAWAL';
 
+  export enum CourseHistoryOperationType { ADD, REMOVE, UPDATE }
+
   export type DayOfWeekType = 'DOM' | 'SEG' | 'TER' | 'QUA' | 'QUI' | 'SEX' | 'SAB';
 
   interface Discipline {
@@ -76,4 +78,14 @@ declare module "CourseHistory" {
   interface CourseHistoryRegisterBodyRequest {
     disciplines?: courseHistoryBodyRequest[],
   }
+
+  interface ProgressDataRegister {
+    disciplineProgress: DisciplineProgress[]
+  }
+  
+  interface DisciplineProgress {
+    status: string;
+    workload: number;
+  }
+
 }

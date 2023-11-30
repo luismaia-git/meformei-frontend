@@ -14,6 +14,10 @@ import * as yup from "yup";
 import { useCourseHistory } from "../../../hooks/useCourseHistory";
 import { courseHistoryRequest } from "../../../service/students";
 
+interface ProgressData {
+  oldStatus: string;
+  workload: number;
+} 
 
 
 export function DisciplineEdit() {
@@ -40,7 +44,14 @@ export function DisciplineEdit() {
     const data = { status: values.status} as courseHistoryRequest
     const isPeriodDifferent = Number(values.period) != params.period
     if(isPeriodDifferent) data.semester = Number(values.period)
-    patchCourseHistory(params.discipline.courseHistoryId, data, toFormationPlanList);
+    let oldStatus
+    const progressData = {} as  ProgressData
+    if(params.discipline.status != values.status){
+      oldStatus = params.discipline.status
+      progressData.oldStatus = params.discipline.status
+      progressData.workload = params.discipline.workload
+    }
+    patchCourseHistory(params.discipline.courseHistoryId, data, progressData, toFormationPlanList);
   }
 
   return (
@@ -84,11 +95,10 @@ export function DisciplineEdit() {
                   placeholder: "Selecione o status da disciplina", 
                   onValueChange: handleChange("status") }}
                   values={[
-                    { label: "Em andamento", value: "INPROGRESS" },
-                    { label: "A Fazer", value: "TODO" },
                     { label: "Concluída", value: "DONE" },
-                    { label: "Trancada", value: "WITHDRAWAL" },
+                    { label: "Em andamento", value: "INPROGRESS" },
                     { label: "Reprovada", value: "FAILED" },
+                    { label: "Trancada", value: "WITHDRAWAL" },
                   ]}
                   defaultValue={params.discipline.status}
                   /**{ label: params.discipline.status, value: params.discipline.status } */

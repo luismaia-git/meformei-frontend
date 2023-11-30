@@ -9,6 +9,7 @@ export function useCourses(id: string) {
 
   useEffect(() => {
     setLoading(true);
+    console.log("usereffect USE COURSEEEEEEEEEEEEE")
     university
       .getCourses(id)
       .then((res) => setData(res))

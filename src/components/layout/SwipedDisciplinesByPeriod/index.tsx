@@ -41,7 +41,7 @@ export function SwipedDisciplinesByPeriod({
   };
 
   const onPressRight = (d: DisciplineData) => {
-    deleteCourseHistory(d.courseHistoryId)
+    deleteCourseHistory(d.courseHistoryId, d.workload, d.status)
   };
 
   return (

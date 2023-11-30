@@ -13,12 +13,13 @@ import { useNavigation } from "@react-navigation/native";
 import { DisciplineProp } from "../../../types/types";
 import { useEffect } from "react";
 import { useDisciplines } from "../../../servicesHooks/useDisciplines";
-import { CourseHistoryRegisterBodyRequest, courseHistoryBodyRequest } from "CourseHistory";
+import { CourseHistoryRegisterBodyRequest, DisciplineProgress, ProgressDataRegister, courseHistoryBodyRequest } from "CourseHistory";
+
 
 export function DisciplineRegister() {
   const theme = useTheme();
   const { loading } = useCourseHistory();
-  const { curriculumDisciplines, postCourseHistory } = useCourseHistory();
+  const { curriculumDisciplines, postCourseHistory, getDisciplinesfromCurriculum } = useCourseHistory();
 
   const navigation = useNavigation<DisciplineProp>();
 
@@ -26,6 +27,7 @@ export function DisciplineRegister() {
     console.log("DisciplineRegister useEffect")
     // console.log("tam: ", curriculumDisciplines?.disciplines?.length)
     // curriculumDisciplines?.disciplines?.map((d) => { console.log(d.disciplineId) })
+    getDisciplinesfromCurriculum()
     console.log("tam: ", curriculumDisciplines?.disciplines?.length)
   }, [])
 
@@ -33,7 +35,13 @@ export function DisciplineRegister() {
   });
 
   const toFormationPlanList = (goBack: boolean) => {
-    if(goBack) navigation.goBack()
+    console.log("==============")
+    console.log("toFormationPlanList")
+    console.log("goBack: ", goBack)
+    if(goBack) {
+      navigation.goBack()
+    }
+    console.log("============== DEPOIIIISSS DO GOO BACKK  ")
   }
 
   const submit = (values: any) => {
@@ -41,10 +49,17 @@ export function DisciplineRegister() {
     const data = {
       disciplines: values.disciplines.map((d: courseHistoryBodyRequest) => {return {...d, status: values.status, daysWeek: ["SEG", "QUA"]}}),
     } as CourseHistoryRegisterBodyRequest
-    console.log("data antees:  ", data)
-    console.log("dataaaaa: ", data!.disciplines![0].status)
-    postCourseHistory(Number(values.semester), data, toFormationPlanList)
-      , []
+     const disciplineProgress : DisciplineProgress[] = values.disciplines.map((d: courseHistoryBodyRequest) => { return { status: values.status, workload: d.hours } })
+      const progressData : ProgressDataRegister = { disciplineProgress: disciplineProgress }
+     console.log("AAAAAAAAAAAAAAAAQQQQQQQQQQQQQQQQQQQQQQQQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
+     console.log("data antees:  ", data)
+     console.log("dataaaaa: ", data!.disciplines![0].status)
+      console.log("progressData1: ", progressData)
+      console.log("progressData2: ", progressData.disciplineProgress)
+      console.log("progressData3: ", progressData.disciplineProgress![0].status)
+      console.log("progressdata4 size: ", progressData.disciplineProgress!.length)
+     console.log("AAAAAAAAAAAAAAAAQQQQQQQQQQQQQQQQQQQQQQQQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
+    postCourseHistory(Number(values.semester), data, progressData, toFormationPlanList)
   }
 
   return (
@@ -137,7 +152,7 @@ export function DisciplineRegister() {
                     //     cod: "CK0215",
                     //   },
                     // ]}
-                    placeholder="Selecione a disciplina"
+                    placeholder="Selecione a(s) disciplina(s)"
                   />
 
                   <InputSelect
@@ -146,11 +161,10 @@ export function DisciplineRegister() {
                       onValueChange: handleChange("status") 
                     }}
                     values={[
+                      { label: "Concluída", value: "DONE" },
                       { label: "Em andamento", value: "INPROGRESS" },
-                      { label: "A Fazer", value: "TODO" },
-                      { label: "Concluídas", value: "DONE" },
-                      { label: "Trancadas", value: "WITHDRAWAL" },
-                      { label: "Reprovadas", value: "FAILED" },
+                      { label: "Reprovada", value: "FAILED" },
+                      { label: "Trancada", value: "WITHDRAWAL" },
                     ]}
                     label="Status"
                   />

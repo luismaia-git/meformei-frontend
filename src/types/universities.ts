@@ -22,4 +22,25 @@ declare module "University" {
   interface Courses {
     courses: Course[];
   }
+
+  interface CourseResponse {
+    id: string;
+    courseName: string;
+    description: string;
+    extraCurricularHours: number;
+    optionalHours: number;
+    requiredHours: number;
+    university: {
+      id: string;
+      name: string;
+      abv: string;
+      city: string;
+      state: string;
+    };
+  }
+  
+  interface CoursesResponse {
+    courses: CourseResponse[];
+  }
+
 }

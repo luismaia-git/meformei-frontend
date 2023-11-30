@@ -5,6 +5,10 @@ import { ProfileTO, User, UserPatchRequest } from "User";
 import { Student } from "../types/types";
 import { CourseHistory, CourseHistoryByPeriod, CourseHistoryRegisterBodyRequest, CourseHistoryResponse } from "CourseHistory";
 
+export type GetStudentParams = {
+  studentRegistration: string;
+};
+
 export type StatusType =
   | "DONE"
   | "INPROGRESS"
@@ -70,12 +74,21 @@ export type postCourseHistoryParams = {
 
 export type postCourseHistoryResponse = {
   disciplineHistory: CourseHistoryByPeriod[];
-  message: string;
 }
 
 
 const service = () => {
   const resource = "students";
+
+  async function getStudent({
+    studentRegistration,
+  }: GetStudentParams) {
+    const path = `${resource}/${studentRegistration}`;
+    const response = await callService(() =>
+      api.get<{ disciplineHistory: DisciplineByPeriod[] }>(path)
+    );
+    return response.data.disciplineHistory;
+  }
 
   async function patchStudent(studentId: string, value: UserPatchRequest) {
     const path = `${resource}/${studentId}`;
@@ -113,7 +126,7 @@ const service = () => {
     const response = await callService(() =>
       api.get<CourseHistory>(path)
     );
-    //console.log("response.data:", response.data);
+    console.log("response.data:", response.data);
     return response.data;
   }
 
@@ -144,10 +157,11 @@ async function patchCourseHistory({ courseHistoryId, studentRegistration, data }
 
 async function postCourseHistory({studentRegistration, semester,  data }: postCourseHistoryParams) {
   const path = `${resource}/${studentRegistration}/courseHistory/semester/${semester}`;
-  console.log("path: ", path)
+  console.log("PPPPPPPPpath: ", path)
   const response = await callService(() =>
     api.post<postCourseHistoryResponse>(path, data)
   );
+  console.log("depois dessa merda veia: ", response.data.disciplineHistory)
   return response.data;
 }
 

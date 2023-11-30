@@ -1,5 +1,5 @@
 import { DisciplineByPeriod, DisciplineData } from "Discipline";
-import { Courses, Universities } from "University";
+import { Courses, CoursesResponse, Universities } from "University";
 import { Student } from "User";
 import api from "./config/api";
 import { callService } from "./config/service";
@@ -20,8 +20,15 @@ const service = () => {
     return response.data;
   }
 
-  async function getCourses(id: string) {
-    const path = `${resource}/${id}/courses`;
+  
+  async function getCourse(idUniversity: string) {
+    const path = `${resource}/${idUniversity}/courses`;
+    const response = await callService(() => api.get<CoursesResponse>(path));
+    return response.data;
+  }
+
+  async function getCourses(idUniversity: string) {
+    const path = `${resource}/${idUniversity}/courses`;
     const response = await callService(() => api.get<Courses>(path));
     return response.data;
   }
@@ -49,6 +56,7 @@ const service = () => {
   return {
     postStudent,
     getUniversities,
+    getCourse,
     getCourses,
     getDisciplinesByCod,
   };
