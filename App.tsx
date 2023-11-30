@@ -5,6 +5,7 @@ import { CustomizedThemeProvider } from "./src/hooks/useTheme";
 import { UserContextProvider } from "./src/hooks/useUser";
 import { PageManager } from "./src/pages";
 import themes from "./src/styles/themes";
+import FlashMessage from "react-native-flash-message";
 
 export default function App() {
   const customTheme = extendTheme({
@@ -21,6 +22,7 @@ export default function App() {
           <NativeBaseProvider theme={customTheme}>
             <GestureHandlerRootView style={{ flex: 1 }}>
               <PageManager />
+              <FlashMessage position="top" />
             </GestureHandlerRootView>
           </NativeBaseProvider>
         </CustomizedThemeProvider>

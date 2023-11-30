@@ -14,6 +14,7 @@ import { DisciplineProp } from "../../../types/types";
 import { useEffect } from "react";
 import { useDisciplines } from "../../../servicesHooks/useDisciplines";
 import { CourseHistoryRegisterBodyRequest, DisciplineProgress, ProgressDataRegister, courseHistoryBodyRequest } from "CourseHistory";
+import { showMessage } from "react-native-flash-message";
 
 
 export function DisciplineRegister() {
@@ -32,18 +33,18 @@ export function DisciplineRegister() {
   }, [])
 
   let DisciplineRegisterValidationSchema = yup.object().shape({
+    disciplines: yup.array().min(1, "Selecione pelo menos uma disciplina."),
+    semester: yup.string().required("O período é obrigatório."),
+    status: yup.string().required("O status é obrigatório."),
   });
 
   const toFormationPlanList = (goBack: boolean) => {
-    console.log("==============")
-    console.log("toFormationPlanList")
-    console.log("goBack: ", goBack)
     if(goBack) {
       navigation.goBack()
-    }
-    console.log("============== DEPOIIIISSS DO GOO BACKK  ")
+    } 
   }
-
+  
+  
   const submit = (values: any) => {
     console.log("submit")
     const data = {
@@ -51,14 +52,6 @@ export function DisciplineRegister() {
     } as CourseHistoryRegisterBodyRequest
      const disciplineProgress : DisciplineProgress[] = values.disciplines.map((d: courseHistoryBodyRequest) => { return { status: values.status, workload: d.hours } })
       const progressData : ProgressDataRegister = { disciplineProgress: disciplineProgress }
-     console.log("AAAAAAAAAAAAAAAAQQQQQQQQQQQQQQQQQQQQQQQQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
-     console.log("data antees:  ", data)
-     console.log("dataaaaa: ", data!.disciplines![0].status)
-      console.log("progressData1: ", progressData)
-      console.log("progressData2: ", progressData.disciplineProgress)
-      console.log("progressData3: ", progressData.disciplineProgress![0].status)
-      console.log("progressdata4 size: ", progressData.disciplineProgress!.length)
-     console.log("AAAAAAAAAAAAAAAAQQQQQQQQQQQQQQQQQQQQQQQQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
     postCourseHistory(Number(values.semester), data, progressData, toFormationPlanList)
   }
 
@@ -84,11 +77,11 @@ export function DisciplineRegister() {
               status: "",
               disciplines: [],
             }}
-            validateOnMount={true}
             onSubmit={(values) => submit(values)}
+            validateOnMount
             validationSchema={DisciplineRegisterValidationSchema}
           >
-            {({ handleChange, handleBlur, handleSubmit, values, isValid, setFieldValue }) => (
+            {({ handleChange, handleBlur, handleSubmit, values, isValid, setFieldValue, errors}) => (
               <BorderedContent>
                 <VStack space={6} mt="5" paddingBottom={30}>
                   <SelectMultiple
@@ -167,6 +160,7 @@ export function DisciplineRegister() {
                       { label: "Trancada", value: "WITHDRAWAL" },
                     ]}
                     label="Status"
+                    errors={errors.status}
                   />
                   <InputSelect
                     config={{ 
@@ -188,9 +182,14 @@ export function DisciplineRegister() {
                   />
 
                   <HStack space={3}>
-                    <Button flex={1} marginTop={30} mt="5" isLoading={loading} onPress={() =>
-                      handleSubmit()
-                    }>
+                    <Button 
+                      flex={1} 
+                      marginTop={30} 
+                      mt="5" 
+                      isLoading={loading} 
+                      isDisabled={!isValid}
+                      onPress={() => handleSubmit()}
+                    >
                       <H5 color={theme.colors.white}>Adicionar</H5>
                     </Button>
                     <Button flex={1} variant="outline" marginTop={30} mt="5" onPress={() =>

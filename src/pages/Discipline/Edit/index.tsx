@@ -13,6 +13,7 @@ import { BorderedContent, Container } from "../styles";
 import * as yup from "yup";
 import { useCourseHistory } from "../../../hooks/useCourseHistory";
 import { courseHistoryRequest } from "../../../service/students";
+import { useState } from "react";
 
 interface ProgressData {
   oldStatus: string;
@@ -29,7 +30,10 @@ export function DisciplineEdit() {
   console.log(params.discipline.courseHistoryId)
   const navigation = useNavigation<any>();
 
-  
+  let initialValuesForm = {
+    status: params.discipline.status,
+    period: params.period.toString(),
+  }
 
   let DisciplineEditValidationSchema = yup.object().shape({
     status: yup.string().required("O status é obrigatório."),
@@ -72,15 +76,12 @@ export function DisciplineEdit() {
         </View>
 
         <Formik
-          initialValues={{
-            status: params.discipline.status,
-            period: params.period.toString(),
-          }}
-          validateOnMount={true}
+          initialValues={initialValuesForm}
+          validateOnMount
           onSubmit={(values) => submit(values)}
           validationSchema={DisciplineEditValidationSchema}
         >
-          {({ handleChange, handleBlur, handleSubmit, values, isValid }) => (
+          {({ handleChange, handleBlur, handleSubmit, values, isValid, touched }) => (
 
             <BorderedContent>
               <VStack space={6} mt="5" paddingBottom={30}>
@@ -92,8 +93,10 @@ export function DisciplineEdit() {
 
                 <InputSelect
                   config={{ 
-                  placeholder: "Selecione o status da disciplina", 
-                  onValueChange: handleChange("status") }}
+                    placeholder: "Selecione o status da disciplina", 
+                    onValueChange: handleChange("status") 
+                  }}
+                  touched={touched.status}
                   values={[
                     { label: "Concluída", value: "DONE" },
                     { label: "Em andamento", value: "INPROGRESS" },
@@ -106,6 +109,7 @@ export function DisciplineEdit() {
                 />
                 <InputSelect
                   config={{ placeholder: "Selecione o período da disciplina", onValueChange: handleChange("period") }}
+                  touched={touched.period}
                   values={[
                     { label: "Período 1", value: "1" },
                     { label: "Período 2", value: "2" },
@@ -122,9 +126,14 @@ export function DisciplineEdit() {
 
 
                 <HStack space={3}>
-                  <Button flex={1} marginTop={30} mt="5" isLoading={loading} onPress={ () => 
-                    handleSubmit()
-                  }>
+                  <Button 
+                    flex={1} 
+                    marginTop={30} 
+                    mt="5" 
+                    isLoading={loading} 
+                    isDisabled={(!isValid || !(initialValuesForm.status !== values.status || initialValuesForm.period !== values.period)) }
+                    onPress={() => {console.log("isValid: ", isValid); console.log("status comparacao: ", initialValuesForm.period == values.period) }}
+                    >
                     <H5 color={theme.colors.white}>Confirmar</H5>
                   </Button>
                   <Button flex={1} variant="outline" marginTop={30} mt="5" onPress={ () => navigation.goBack() } >

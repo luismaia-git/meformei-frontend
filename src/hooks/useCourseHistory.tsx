@@ -15,6 +15,7 @@ import { curriculums } from "../service/curriculums";
 import { parseCourseHistoryToRegisterBody, parseDisciplinesResponseToCourseHistoryRegisterBodyRequest } from "../utils/parsers";
 import { university } from "../service/universities";
 import { set } from "react-native-reanimated";
+import { showMessage } from "react-native-flash-message";
 
 export interface ICourseHistoryContext {
   loading: boolean,
@@ -269,15 +270,24 @@ export function CourseHistoryContextProvider({ children }: { children: ReactNode
           setCourseHistory(updatedCourseHistory);
           // REMOVE 1
           updateProgressWorkload1(1, workload, status)
-          // updateProgressWorkload(workload, status, -1)
+          showMessage({
+            message: "Disciplina removida com sucesso",
+            type: "success",
+            duration: 3000,
+            icon: "success",
+          });
         }
       }
-
-
     } catch (error: any) {
       error.response
         ? setError(error.response.data.message)
         : setError(error.message);
+      showMessage({
+        message: error,
+        type: "danger",
+        duration: 3000,
+        icon: "danger",
+      });
     } finally {
       setLoading(false);
     }
@@ -370,10 +380,22 @@ export function CourseHistoryContextProvider({ children }: { children: ReactNode
       } else {
         throw new Error("Não foi possível editar disciplina")
       }
+      showMessage({
+        message: "Disciplina editada com sucesso",
+        type: "success",
+        duration: 3000,
+        icon: "success",
+      });
     } catch (error: any) {
       error.response
         ? setError(error.response.data.message)
         : setError(error.message);
+      showMessage({
+        message: "Não foi possível editar disciplina",
+        type: "danger",
+        duration: 3000,
+        icon: "danger",
+      });
       console.log("error: ", error)
     } finally {
       setLoading(false);
@@ -421,13 +443,26 @@ export function CourseHistoryContextProvider({ children }: { children: ReactNode
       console.log("progressData: ", progressData)
       // updatedCourseHistory.disciplineHistory?.map((d) => { console.log("period: ", d.period); d.disciplines.map((d) => console.log("discipline: ", d.name)) })
       response.disciplineHistory[0].disciplines?.map((d) => { updateProgressWorkload1(0, d.workload, d.status) })
+
       toFormationPlanList(true);
+      showMessage({
+        message: "Disciplina cadastrada com sucesso",
+        type: "success",
+        duration: 3000,
+        icon: "success",
+      });
       // console.warn("Cadastrada com sucesso")
     } catch (error: any) {
       error.response
         ? setError(error.response.data.message)
         : setError(error.message);
       console.log("error: ", error)
+      showMessage({
+        message: "Não foi possível cadastrar disciplina",
+        type: "danger",
+        duration: 3000,
+        icon: "danger",
+      });
     } finally {
       setLoading(false);
     }
